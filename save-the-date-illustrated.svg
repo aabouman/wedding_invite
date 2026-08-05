@@ -1,0 +1,675 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" font-family="sans-serif">
+  <title>Sophie &amp; Alex — Save the Date</title>
+  <desc>
+    Hand-drawn watercolor save-the-date: city hall with clock tower, double-happiness
+    lanterns, and Sophie and Alex holding hands.
+    Structured for animation:
+      - Every element lives in a named group (#title, #city-hall, #sophie, #alex, ...)
+      - Lettering (#title/#names/#footer) is traced 1:1 from the original
+        handwriting as filled outline paths, one path per letter, ordered
+        left-to-right for stagger animation. For a write-on effect, use the
+        monoline letters in defs as animated mask strokes over each glyph.
+      - Repeated motifs (letters, lantern, corner flourish, pride flag, dormer,
+        arch, blossom, sparkle) are defs referenced with use.
+      - Washes use gradients + the #wc pigment-mottle filter for continuous
+        watercolor shading; #soft blurs shading blobs.
+      - #background can be hidden for a transparent version.
+  </desc>
+
+  <defs>
+    <!-- wobble + crayon-edge filter: stage 1 warps lines (hand wobble), stage 2
+         roughens edges (dry-media texture). Remove filter="url(#hand-drawn)"
+         from #artwork for crisp geometry. -->
+    <filter id="hand-drawn" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="7" result="wobble"/>
+      <feDisplacementMap in="SourceGraphic" in2="wobble" scale="6" xChannelSelector="R" yChannelSelector="G" result="warped"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.22" numOctaves="1" seed="3" result="grain"/>
+      <feDisplacementMap in="warped" in2="grain" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <!-- watercolor pigment mottle: multiplies the wash by low-frequency noise so
+         color density varies continuously, like uneven pigment -->
+    <filter id="wc" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.028" numOctaves="3" seed="8" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.55 0.55 0.55 0 0.45" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+    </filter>
+
+    <!-- hair wash: stronger mottle so paper shows through the pigment -->
+    <filter id="wc2" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03 0.04" numOctaves="3" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.5 1.5 1.5 0 -0.35" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+    </filter>
+
+    <!-- soft blurs for shading blobs / edge pooling -->
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="soft2" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.5"/></filter>
+    <!-- pencil softness for lettering: a whisper of blur so strokes read as graphite -->
+    <filter id="pencil" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="0.9"/></filter>
+
+    <!-- continuous-shading gradients, sampled from the original painting -->
+    <linearGradient id="g-roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2e6f6"/>
+      <stop offset="0.55" stop-color="#c9d2ec"/>
+      <stop offset="1" stop-color="#adb8dc"/>
+    </linearGradient>
+    <linearGradient id="g-spire" x1="0.1" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#dbe1f4"/>
+      <stop offset="0.65" stop-color="#c4cdea"/>
+      <stop offset="1" stop-color="#a6b1d8"/>
+    </linearGradient>
+    <linearGradient id="g-wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf4ea"/>
+      <stop offset="1" stop-color="#f1e3d0"/>
+    </linearGradient>
+    <radialGradient id="g-lantern" cx="0.45" cy="0.38" r="0.8">
+      <stop offset="0" stop-color="#f9c3c5"/>
+      <stop offset="0.55" stop-color="#f3adb1"/>
+      <stop offset="1" stop-color="#e29a9e"/>
+    </radialGradient>
+    <linearGradient id="g-shirt" x1="0.25" y1="0" x2="0.75" y2="1">
+      <stop offset="0" stop-color="#f3d3ce"/>
+      <stop offset="0.55" stop-color="#e6b3ad"/>
+      <stop offset="1" stop-color="#d29a93"/>
+    </linearGradient>
+    <linearGradient id="g-polo" x1="0.3" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#fbf1d2"/>
+      <stop offset="0.6" stop-color="#f7e3ab"/>
+      <stop offset="1" stop-color="#eccd7e"/>
+    </linearGradient>
+    <linearGradient id="g-shorts-alex" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#f8ecc4"/>
+      <stop offset="1" stop-color="#edd191"/>
+    </linearGradient>
+    <linearGradient id="g-shorts-sophie" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#e0e0e2"/>
+      <stop offset="1" stop-color="#bcbcc0"/>
+    </linearGradient>
+    <linearGradient id="g-grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eaf1e1"/>
+      <stop offset="1" stop-color="#d2e2c2"/>
+    </linearGradient>
+
+    <!-- ============ hand-lettering alphabet (monoline, baseline y=0, ~40 tall, centered on x=0) ============ -->
+    <path id="L-S" pathLength="1" d="M12,-35 C7,-41 -8,-41 -11,-33 C-14,-24 12,-22 12,-11 C12,-1 -7,2 -13,-5"/>
+    <path id="L-A" pathLength="1" d="M-13,0 L-1,-40 L13,0 M-8,-13 L8,-13"/>
+    <path id="L-V" pathLength="1" d="M-13,-40 L0,0 L13,-40"/>
+    <path id="L-E" pathLength="1" d="M11,-40 L-10,-40 L-10,0 L11,0 M-10,-21 L6,-21"/>
+    <path id="L-T" pathLength="1" d="M-13,-40 L13,-40 M0,-39 L0,0"/>
+    <path id="L-H" pathLength="1" d="M-11,-40 L-11,0 M11,-40 L11,0 M-11,-20 L11,-20"/>
+    <path id="L-D" pathLength="1" d="M-11,-40 L-11,0 M-11,-40 C7,-39 13,-29 13,-20 C13,-10 7,-1 -11,0"/>
+    <path id="L-O" pathLength="1" d="M-1,-40 C-10,-40 -14,-31 -14,-20 C-14,-8 -9,0 0,0 C10,0 14,-9 14,-21 C14,-32 9,-40 -1,-40"/>
+    <path id="L-P" pathLength="1" d="M-11,0 L-11,-40 C6,-40 12,-34 12,-28 C12,-20 4,-16 -11,-16"/>
+    <path id="L-I" pathLength="1" d="M-5,-40 L5,-40 M0,-40 L0,0 M-5,0 L5,0"/>
+    <path id="L-L" pathLength="1" d="M-10,-40 L-10,0 L12,0"/>
+    <path id="L-X" pathLength="1" d="M-12,-40 L12,0 M12,-40 L-12,0"/>
+    <path id="L-C" pathLength="1" d="M13,-33 C7,-42 -9,-41 -13,-27 C-16,-13 -8,1 1,1 C7,1 11,-3 13,-8"/>
+    <path id="L-M" pathLength="1" d="M-14,0 L-10,-40 L0,-13 L10,-40 L14,0"/>
+    <path id="L-U" pathLength="1" d="M-12,-40 L-12,-12 C-12,-3 -6,1 0,1 C7,1 12,-3 12,-12 L12,-40"/>
+    <path id="L-R" pathLength="1" d="M-11,0 L-11,-40 C5,-40 11,-34 11,-28 C11,-21 3,-17 -11,-17 M-3,-17 L12,0"/>
+    <path id="L-Y" pathLength="1" d="M-12,-40 L0,-19 L12,-40 M0,-19 L0,0"/>
+    <path id="L-N" pathLength="1" d="M-11,0 L-11,-40 L11,0 L11,-40"/>
+    <path id="L-AMP" pathLength="1" d="M12,-2 C0,-13 -11,-25 -11,-33 C-11,-39 -3,-42 0,-36 C3,-31 -2,-24 -7,-18 C-13,-11 -13,-3 -7,0 C-1,3 7,-3 9,-13 M-6,-22 L8,-26"/>
+    <path id="L-EXCL" pathLength="1" d="M0,-40 L0,-13 M0,-4 L0,-1"/>
+
+    <!-- ============ six-stripe pride hand flag, soft crayon palette (46 x 39) ============ -->
+    <g id="pride-flag">
+      <rect x="0" y="0"    width="46" height="6.5" fill="#d96a5e"/>
+      <rect x="0" y="6.5"  width="46" height="6.5" fill="#e9995c"/>
+      <rect x="0" y="13"   width="46" height="6.5" fill="#e6c95f"/>
+      <rect x="0" y="19.5" width="46" height="6.5" fill="#8ab87a"/>
+      <rect x="0" y="26"   width="46" height="6.5" fill="#7f97cf"/>
+      <rect x="0" y="32.5" width="46" height="6.5" fill="#a487c4"/>
+      <rect x="0" y="0" width="46" height="39" fill="none" stroke="#8a857f" stroke-width="2"/>
+    </g>
+
+    <!-- ============ dormer window, gray-brown, cross finial (origin at roof-line center) ============ -->
+    <g id="dormer" stroke-linejoin="round">
+      <path d="M0,-20 L0,-34 M-6,-28 L6,-28" fill="none" stroke="#5e574f" stroke-width="3" stroke-linecap="round"/>
+      <path d="M-16,0 L16,0 L16,44 L-16,44 Z" fill="#cabcac" stroke="#6f675e" stroke-width="3" filter="url(#wc)"/>
+      <path d="M-22,4 L0,-20 L22,4 Z" fill="#8a8178" stroke="#5e574f" stroke-width="3"/>
+      <rect x="-8" y="10" width="16" height="24" fill="#5c5348" stroke="#4a443c" stroke-width="2"/>
+      <path d="M0,12 L0,32 M-6,22 L6,22" fill="none" stroke="#e8e0d0" stroke-width="2"/>
+    </g>
+
+    <!-- ============ open pencil arcade arch (origin at arch center) ============ -->
+    <g id="arch-window" fill="none" stroke-linecap="round">
+      <path d="M-24,42 L-24,-4 C-24,-30 24,-30 24,-4 L24,42" stroke="#9a938a" stroke-width="3.5"/>
+      <path d="M-20,42 L-20,-2 C-20,-24 20,-24 20,-2 L20,42" stroke="#cabfaf" stroke-width="2.5" opacity="0.7"/>
+    </g>
+
+    <!-- ============ five-petal charcoal blossom (Sophie's shirt print) ============ -->
+    <g id="blossom" fill="#4a443e">
+      <ellipse cx="0" cy="-6" rx="3.2" ry="4.4"/>
+      <ellipse cx="5.7" cy="-1.8" rx="4.4" ry="3.2" transform="rotate(20 5.7 -1.8)"/>
+      <ellipse cx="3.6" cy="5" rx="3.2" ry="4.4" transform="rotate(-30 3.6 5)"/>
+      <ellipse cx="-3.6" cy="5" rx="3.2" ry="4.4" transform="rotate(30 -3.6 5)"/>
+      <ellipse cx="-5.7" cy="-1.8" rx="4.4" ry="3.2" transform="rotate(-20 -5.7 -1.8)"/>
+    </g>
+
+    <!-- ============ double-happiness lantern: rose watercolor diamond, charcoal frame,
+                       gray cord, gold fletched ends (origin at diamond center) ============ -->
+    <g id="lantern">
+      <!-- hanging cord + top fletch -->
+      <path id="lantern-cord-top" d="M3,-158 C-1,-134 1,-112 -1,-92" fill="none" stroke="#908c87" stroke-width="2.5" stroke-linecap="round"/>
+      <g stroke="#d2b24a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M-8,-142 C-3,-134 0,-128 1,-122"/>
+        <path d="M11,-143 C5,-135 2,-128 1,-122"/>
+      </g>
+      <!-- rose watercolor diamond with charcoal frame -->
+      <path id="lantern-diamond" d="M0,-92 C31,-65 63,-31 90,0 C63,31 31,65 0,92 C-31,65 -63,31 -90,0 C-63,-31 -31,-65 0,-92 Z"
+            fill="url(#g-lantern)" filter="url(#wc)"/>
+      <!-- pigment pooled at the edges -->
+      <path d="M0,-80 C27,-57 55,-28 78,0 C55,28 27,57 0,80 C-27,57 -55,28 -78,0 C-55,-28 -27,-57 0,-80 Z"
+            fill="none" stroke="#d18e93" stroke-width="9" opacity="0.5" filter="url(#soft2)"/>
+      <g id="lantern-dark" transform="translate(1.5,-7.5)" fill="#4a443f" fill-rule="evenodd" filter="url(#pencil)">
+        <path d="M6.0,93.0 L-14.0,78.0 L-35.0,56.0 L-42.0,51.0 L-66.0,28.0 L-69.0,27.0 L-82.0,15.0 L-87.5,11.5 L-86.5,8.5 L-84.0,7.0 L-79.0,13.0 L-59.0,27.0 L-31.0,53.0 L-30.0,52.0 L-23.5,60.5 L-14.5,68.5 L-9.0,77.0 L-2.0,80.0 L5.0,87.0 L7.5,84.5 L7.5,82.5 L12.5,78.5 L17.5,71.5 L53.5,35.5 L68.5,18.5 L69.5,15.5 L76.5,9.5 L79.5,5.5 L79.5,3.5 L83.5,-0.5 L83.5,-3.5 L29.0,-58.0 L26.0,-59.0 L5.0,-80.0 L-1.0,-84.0 L-14.5,-71.5 L-20.5,-63.5 L-45.5,-38.5 L-62.5,-16.5 L-78.5,1.5 L-84.0,6.0 L-85.5,5.5 L-84.5,-0.5 L-75.5,-9.5 L-55.5,-34.5 L-5.5,-87.5 L-5.0,-93.0 L-4.5,-90.5 L-2.0,-88.0 L2.0,-88.0 L7.0,-85.0 L20.0,-71.0 L24.0,-69.0 L39.0,-56.0 L74.5,-20.5 L85.5,-8.5 L87.5,-4.5 L86.5,3.5 L75.5,18.5 L54.5,39.5 L53.5,42.5 L38.5,56.5 L32.5,64.5 L14.5,83.5 L12.5,87.5 L6.0,93.0 Z"/>
+      </g>
+      <!-- corner knots -->
+      <path d="M-8,-94 C-2,-100 4,-100 9,-93 M-9,89 C-3,96 4,96 9,88" fill="none" stroke="#4a443f" stroke-width="3" stroke-linecap="round"/>
+      <!-- charcoal double-happiness glyph -->
+      <g id="shuangxi" fill="none" stroke="#45403c" stroke-width="5.5" stroke-linecap="round" transform="rotate(-7) scale(1.24)">
+        <g id="xi-left" transform="translate(-19,8)">
+          <path d="M0,-48 L0,-38 M-13,-42 L13,-42 M-9,-33 L9,-33"/>
+          <rect x="-8" y="-28" width="16" height="11"/>
+          <path d="M-16,-11 L16,-11"/>
+          <rect x="-11" y="-5" width="22" height="19"/>
+        </g>
+        <g id="xi-right" transform="translate(18,8)">
+          <path d="M0,-48 L0,-38 M-13,-42 L13,-42 M-9,-33 L9,-33"/>
+          <rect x="-8" y="-28" width="16" height="11"/>
+          <path d="M-16,-11 L16,-11"/>
+          <rect x="-11" y="-5" width="22" height="19"/>
+        </g>
+      </g>
+      
+      <!-- bottom cord, gold loop knot, down fletch -->
+      <g id="lantern-tassel">
+        <path d="M0,90 C2,106 0,126 1,154 M1,154 L-6,142 M1,154 L7,142" fill="none" stroke="#908c87" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M1,102 C-10,96 -14,108 -3,111 C8,114 12,101 1,104 C-6,106 -8,114 -1,118" fill="none" stroke="#c9a83e" stroke-width="3.5" stroke-linecap="round"/>
+        <g stroke="#d2b24a" stroke-width="4" fill="none" stroke-linecap="round">
+          <path d="M-8,124 C-3,132 0,138 1,145"/>
+          <path d="M10,123 C4,131 2,138 1,145"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============ corner flourish: thin coral crayon lines + loop-petal flower
+                       (drawn for top-left, mirrored for others) ============ -->
+    <g id="corner">
+      <path d="M28,236 C22,204 31,172 26,142 C22,116 31,94 33,72" fill="none" stroke="#f29b90" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M244,32 C206,26 168,38 128,30 C102,25 74,34 54,44" fill="none" stroke="#f29b90" stroke-width="2.6" stroke-linecap="round"/>
+      <g id="corner-flower">
+        <g fill="#fbdcd6" fill-opacity="0.5" stroke="#f29b90" stroke-width="2.6" stroke-linejoin="round">
+          <path d="M46,54 C30,42 30,22 42,22 C52,22 52,42 46,54"/>
+          <path d="M46,54 C36,38 16,34 14,46 C12,56 34,58 46,54"/>
+          <path d="M46,54 C60,42 78,44 76,56 C74,66 54,62 46,54"/>
+          <path d="M46,54 C58,40 56,20 66,24 C74,28 60,48 46,54"/>
+        </g>
+        <circle cx="47" cy="55" r="7" fill="#e8b24a"/>
+      </g>
+    </g>
+
+    <!-- ============ little sparkle ============ -->
+    <g id="sparkle" fill="none" stroke-linecap="round">
+      <path d="M0,-10 L0,10 M-10,0 L10,0"/>
+      <path d="M-5,-5 L5,5 M-5,5 L5,-5" opacity="0.7"/>
+    </g>
+  </defs>
+
+  <!-- paper background: hide or delete this layer for a transparent version -->
+  <rect id="background" x="0" y="0" width="1200" height="1500" fill="#ffffff"/>
+
+  <!-- everything drawable lives inside #artwork so the wobble filter hits it all -->
+  <g id="artwork" filter="url(#hand-drawn)">
+
+  <!-- ================= corner border flourishes ================= -->
+  <g id="border">
+    <use id="corner-tl" href="#corner" transform="translate(6,6)"/>
+    <use id="corner-tr" href="#corner" transform="translate(1194,6) scale(-1,1)"/>
+    <use id="corner-bl" href="#corner" transform="translate(6,1494) scale(1,-1)"/>
+    <use id="corner-br" href="#corner" transform="translate(1194,1494) scale(-1,-1)"/>
+  </g>
+
+  <!-- ================= arched title: SAVE THE DATE ================= -->
+  <g id="title" fill="#525252" fill-opacity="0.92" fill-rule="evenodd" filter="url(#pencil)">
+    <path id="title-0" d="M272.0,399.5 L263.0,399.5 L262.5,398.0 L265.0,396.5 L267.0,397.5 L272.5,391.0 L273.5,388.0 L272.5,387.0 L274.5,385.0 L274.5,373.0 L272.5,369.0 L257.0,353.5 L231.0,338.5 L223.5,330.0 L218.5,321.0 L217.5,309.0 L219.5,307.0 L220.5,302.0 L229.0,293.5 L237.0,292.5 L243.0,294.5 L245.5,297.0 L242.0,297.5 L238.0,295.5 L237.0,296.5 L234.0,295.5 L227.5,302.0 L226.5,319.0 L233.5,333.0 L239.0,338.5 L267.0,355.5 L277.5,366.0 L281.5,373.0 L282.5,377.0 L281.5,379.0 L283.5,384.0 L280.5,388.0 L280.5,392.0 L272.0,399.5 Z"/>
+    <path id="title-1" d="M304.0,346.5 L301.0,346.5 L296.5,339.0 L297.5,335.0 L294.5,332.0 L292.5,324.0 L287.5,317.0 L288.5,316.0 L286.5,314.0 L285.5,308.0 L282.5,302.0 L283.5,296.0 L280.5,291.0 L281.5,287.0 L279.5,281.0 L280.5,276.0 L283.0,273.5 L286.5,274.0 L286.5,281.0 L289.5,287.0 L290.5,299.0 L293.5,304.0 L292.5,306.0 L297.5,316.0 L296.5,319.0 L301.5,330.0 L301.5,335.0 L304.5,343.0 L304.0,346.5 Z"/>
+    <path id="title-2" d="M332.0,325.5 L327.5,325.0 L325.5,321.0 L320.5,317.0 L319.5,313.0 L313.5,308.0 L311.0,302.5 L304.0,305.5 L300.0,310.5 L297.5,309.0 L300.0,305.5 L308.5,299.0 L307.5,298.0 L308.5,297.0 L301.5,288.0 L302.5,287.0 L299.0,285.5 L294.5,279.0 L296.0,277.5 L300.5,281.0 L301.5,284.0 L308.5,291.0 L313.5,300.0 L332.5,322.0 L332.0,325.5 Z"/>
+    <path id="title-3" d="M385.0,297.5 L380.0,297.5 L378.5,294.0 L359.5,275.0 L354.5,267.0 L347.5,260.0 L341.5,251.0 L341.5,249.0 L338.5,246.0 L341.0,243.5 L343.0,243.5 L345.5,246.0 L360.5,264.0 L365.5,272.0 L377.0,283.5 L379.5,281.0 L377.5,274.0 L380.5,271.0 L376.5,263.0 L377.5,257.0 L375.5,255.0 L377.5,251.0 L373.5,248.0 L375.5,244.0 L372.5,241.0 L373.5,237.0 L370.5,234.0 L374.0,229.5 L376.5,232.0 L375.5,233.0 L379.5,239.0 L377.5,245.0 L381.5,251.0 L380.5,255.0 L383.5,260.0 L381.5,263.0 L384.5,269.0 L383.5,270.0 L384.5,275.0 L383.5,281.0 L385.5,283.0 L384.5,285.0 L385.5,287.0 L385.0,297.5 Z"/>
+    <path id="title-4" d="M433.0,277.5 L429.5,277.0 L426.5,270.0 L422.5,252.0 L416.5,236.0 L417.5,234.0 L415.5,232.0 L414.5,226.0 L411.5,220.0 L412.5,215.0 L416.0,211.5 L421.0,208.5 L427.0,207.5 L431.5,208.0 L422.0,211.5 L418.5,215.0 L423.5,233.0 L425.0,234.5 L429.0,234.5 L440.0,229.5 L441.5,231.0 L434.0,235.5 L427.0,235.5 L425.5,237.0 L428.5,248.0 L429.5,260.0 L431.5,263.0 L430.5,265.0 L432.5,270.0 L435.0,272.5 L439.0,271.5 L442.0,272.5 L452.0,267.5 L457.0,266.5 L460.5,268.0 L448.0,273.5 L437.0,275.5 L433.0,277.5 Z"/>
+    <path id="title-5" d="M557.0,248.5 L554.5,245.0 L553.5,239.0 L554.5,237.0 L552.5,234.0 L553.5,233.0 L551.5,226.0 L552.5,224.0 L550.5,221.0 L551.5,220.0 L549.5,212.0 L550.5,210.0 L548.5,204.0 L549.5,203.0 L548.5,181.0 L550.5,179.0 L547.0,177.5 L530.0,184.5 L528.5,182.0 L546.0,173.5 L572.0,167.5 L575.5,170.0 L571.0,172.5 L554.0,174.5 L550.5,177.0 L554.5,181.0 L555.5,185.0 L554.5,190.0 L556.5,196.0 L555.5,205.0 L557.5,208.0 L556.5,211.0 L558.5,217.0 L557.5,221.0 L559.5,230.0 L559.5,241.0 L561.5,246.0 L557.0,248.5 Z"/>
+    <path id="title-6" d="M587.0,249.5 L583.5,249.0 L581.5,243.0 L582.5,239.0 L577.5,224.0 L578.5,220.0 L576.5,218.0 L577.5,217.0 L576.5,216.0 L577.5,212.0 L576.5,211.0 L577.5,209.0 L576.5,201.0 L577.5,194.0 L580.0,192.5 L582.5,195.0 L583.5,199.0 L582.5,204.0 L584.5,207.0 L583.5,208.0 L586.0,214.5 L589.0,211.5 L602.0,204.5 L605.0,197.5 L610.5,199.0 L609.5,203.0 L611.5,205.0 L610.5,208.0 L612.5,210.0 L610.5,213.0 L613.5,219.0 L612.5,223.0 L615.5,237.0 L613.5,239.0 L616.5,242.0 L616.0,246.5 L611.0,246.5 L608.5,244.0 L609.5,241.0 L607.5,236.0 L605.5,222.0 L606.5,215.0 L604.5,213.0 L605.5,209.0 L603.0,207.5 L594.0,213.5 L592.0,212.5 L585.5,218.0 L588.5,235.0 L587.5,237.0 L590.5,244.0 L587.0,249.5 Z"/>
+    <path id="title-7" d="M676.0,247.5 L669.0,246.5 L666.0,244.5 L643.0,246.5 L640.5,244.0 L640.5,239.0 L638.5,237.0 L639.5,236.0 L637.5,232.0 L636.5,225.0 L637.5,224.0 L635.5,217.0 L634.5,194.0 L636.0,187.5 L639.0,187.5 L640.5,189.0 L641.5,194.0 L640.5,197.0 L642.5,202.0 L641.5,207.0 L644.0,211.5 L671.5,217.0 L670.0,218.5 L645.0,213.5 L643.5,215.0 L645.5,228.0 L644.5,230.0 L647.5,238.0 L647.5,242.0 L650.0,243.5 L655.0,241.5 L665.0,241.5 L675.0,244.5 L676.5,246.0 L676.0,247.5 Z"/>
+    <path id="title-8" d="M665.0,190.5 L657.0,188.5 L649.0,188.5 L640.5,185.0 L643.0,183.5 L647.0,185.5 L655.0,185.5 L659.0,187.5 L663.0,187.5 L665.5,189.0 L665.0,190.5 Z"/>
+    <path id="title-9" d="M771.0,282.5 L768.0,282.5 L767.5,280.0 L784.0,272.5 L800.5,259.0 L801.5,256.0 L816.5,241.0 L816.5,237.0 L822.5,227.0 L827.5,207.0 L825.5,197.0 L817.5,187.0 L807.0,180.5 L807.0,178.5 L817.0,183.5 L829.5,198.0 L831.5,205.0 L830.5,214.0 L831.5,220.0 L828.5,226.0 L828.5,230.0 L819.5,248.0 L797.0,271.5 L787.0,277.5 L782.0,279.5 L781.0,278.5 L778.0,280.5 L777.0,279.5 L771.0,282.5 Z"/>
+    <path id="title-10" d="M775.0,261.5 L771.5,258.0 L773.5,247.0 L780.5,233.0 L787.5,209.0 L795.5,193.0 L796.5,190.0 L795.5,189.0 L797.0,187.5 L800.0,187.5 L801.5,189.0 L800.5,195.0 L801.5,198.0 L798.5,202.0 L789.5,230.0 L778.5,252.0 L779.5,254.0 L775.0,261.5 Z"/>
+    <path id="title-11" d="M865.0,296.5 L861.5,295.0 L860.5,291.0 L864.5,280.0 L863.5,278.0 L867.5,269.0 L858.0,261.5 L851.0,257.5 L844.5,264.0 L840.5,273.0 L837.5,275.0 L834.0,280.5 L832.0,281.5 L830.0,280.5 L829.5,276.0 L832.5,273.0 L840.5,257.0 L853.5,240.0 L867.0,225.5 L871.0,224.5 L879.5,231.0 L880.5,234.0 L879.5,239.0 L881.5,241.0 L878.5,251.0 L878.5,258.0 L873.5,268.0 L872.5,279.0 L869.5,283.0 L868.5,289.0 L865.0,296.5 Z M867.5,265.0 L871.5,258.0 L872.5,251.0 L876.5,240.0 L877.5,231.0 L875.0,228.5 L851.5,255.0 L854.0,257.5 L861.0,260.5 L865.0,264.5 L867.5,265.0 Z"/>
+    <path id="title-12" d="M904.0,323.5 L901.5,322.0 L901.5,319.0 L904.5,315.0 L904.5,311.0 L909.5,306.0 L913.5,297.0 L926.5,280.0 L926.5,278.0 L933.5,269.0 L932.5,268.0 L937.5,262.0 L936.0,259.5 L918.0,250.5 L915.5,248.0 L917.0,247.5 L927.0,250.5 L930.0,253.5 L955.0,268.5 L958.5,272.0 L961.5,278.0 L954.0,271.5 L943.0,265.5 L927.5,292.0 L915.5,307.0 L915.5,309.0 L909.5,316.0 L908.5,319.0 L904.0,323.5 Z"/>
+    <path id="title-13" d="M966.0,373.5 L946.0,360.5 L940.0,358.5 L935.5,352.0 L938.5,346.0 L942.5,342.0 L942.5,340.0 L946.5,337.0 L945.5,336.0 L952.5,329.0 L953.5,325.0 L959.5,318.0 L968.5,303.0 L975.0,294.5 L979.0,292.5 L987.0,297.5 L989.5,301.0 L983.0,296.5 L981.0,296.5 L973.5,308.0 L973.5,311.0 L988.0,319.5 L993.5,325.0 L993.5,327.0 L972.0,312.5 L962.5,325.0 L962.5,327.0 L951.5,340.0 L949.5,345.0 L942.5,352.0 L942.5,354.0 L946.0,357.5 L962.0,367.5 L966.5,372.0 L966.0,373.5 Z"/>
+  </g>
+
+  <!-- ================= hanging double-happiness lanterns ================= -->
+  <g id="lanterns">
+    <g id="lantern-left" transform="translate(136,690)"><use href="#lantern"/></g>
+    <g id="lantern-right" transform="translate(1064,690)"><use href="#lantern"/></g>
+  </g>
+
+  <!-- ================= city hall ================= -->
+  <g id="city-hall" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wings -->
+    <g id="wing-left">
+      <path id="wing-left-wall" d="M348,634 C410,628 500,630 559,633 L561,744 C480,749 400,748 330,744 Z"
+            fill="url(#g-wall)" stroke="#948d84" stroke-width="3" filter="url(#wc)"/>
+      <path id="wing-left-roof" d="M347,594 C410,585 490,586 562,594 L564,634 C480,640 405,639 348,635 Z"
+            fill="url(#g-roof)" stroke="#7d7873" stroke-width="3" filter="url(#wc)"/>
+      <path d="M334,632 C420,638 490,638 560,633" fill="none" stroke="#98a3cf" stroke-width="5" opacity="0.6" filter="url(#soft2)"/>
+      <path d="M349,592 C410,583 490,584 561,592" fill="none" stroke="#6d6863" stroke-width="3.5"/>
+    </g>
+    <g id="wing-right">
+      <path id="wing-right-wall" d="M661,633 C720,630 810,628 884,634 L918,746 C800,750 720,749 659,744 Z"
+            fill="url(#g-wall)" stroke="#948d84" stroke-width="3" filter="url(#wc)"/>
+      <path id="wing-right-roof" d="M638,594 C710,586 810,586 888,596 L886,635 C790,639 720,640 636,634 Z"
+            fill="url(#g-roof)" stroke="#7d7873" stroke-width="3" filter="url(#wc)"/>
+      <path d="M640,633 C710,638 790,640 884,632" fill="none" stroke="#98a3cf" stroke-width="5" opacity="0.6" filter="url(#soft2)"/>
+      <path d="M639,592 C710,584 815,584 886,594" fill="none" stroke="#6d6863" stroke-width="3.5"/>
+    </g>
+    <!-- dormers -->
+    <g id="dormers">
+      <use href="#dormer" transform="translate(371,586)"/>
+      <use href="#dormer" transform="translate(451,580) scale(1.08)"/>
+      <use href="#dormer" transform="translate(757,580) scale(1.08)"/>
+      <use href="#dormer" transform="translate(847,586)"/>
+    </g>
+    <!-- warm brush speckles on the walls -->
+    <g id="wing-texture" fill="none" stroke="#e0c5a8" stroke-linecap="round" opacity="0.8">
+      <path d="M352,636 l26,-2 M420,650 l22,-1 M492,640 l20,-2 M368,700 l24,-1 M470,712 l20,-2 M520,668 l18,-1" stroke-width="4"/>
+      <path d="M676,644 l24,-2 M740,660 l22,-1 M812,648 l20,-2 M688,708 l24,-1 M790,716 l20,-2 M836,676 l18,-1" stroke-width="4"/>
+    </g>
+    <!-- unpainted dry-brush patches, like the original's uneven wash -->
+    <g id="wall-dry-patches" fill="#ffffff" opacity="0.4" filter="url(#soft)">
+      <ellipse cx="420" cy="682" rx="42" ry="15"/>
+      <ellipse cx="505" cy="716" rx="30" ry="12"/>
+      <ellipse cx="365" cy="722" rx="26" ry="11"/>
+      <ellipse cx="722" cy="700" rx="45" ry="14"/>
+      <ellipse cx="828" cy="672" rx="36" ry="13"/>
+      <ellipse cx="880" cy="716" rx="26" ry="12"/>
+    </g>
+    <!-- open arcade arches on the wings -->
+    <g id="arcade-windows">
+      <use href="#arch-window" transform="translate(382,696)"/>
+      <use href="#arch-window" transform="translate(447,696)"/>
+      <use href="#arch-window" transform="translate(512,696)"/>
+      <use href="#arch-window" transform="translate(714,698)"/>
+      <use href="#arch-window" transform="translate(784,698)"/>
+      <use href="#arch-window" transform="translate(854,700)"/>
+    </g>
+
+    <!-- clock tower -->
+    <g id="tower" transform="translate(9,0)">
+      <path id="tower-body" d="M527,456 C575,452 630,452 673,456 L677,748 C625,752 575,752 523,748 Z"
+            fill="url(#g-wall)" stroke="#8f8880" stroke-width="3.5" filter="url(#wc)"/>
+      <g id="tower-texture" fill="none" stroke="#dcc3a6" stroke-linecap="round" opacity="0.85">
+        <path d="M548,478 l22,-2 M604,486 l20,-1 M634,474 l18,-2" stroke-width="4"/>
+        <path d="M552,542 l20,-1 M612,550 l22,-2 M560,614 l20,-2 M622,620 l20,-1" stroke-width="4"/>
+        <path d="M548,662 l22,-2 M608,672 l20,-1 M556,706 l20,-1 M618,714 l22,-2 M584,736 l20,-1" stroke-width="4"/>
+      </g>
+      <g id="tower-dry-patches" fill="#ffffff" opacity="0.4" filter="url(#soft)">
+        <ellipse cx="596" cy="556" rx="26" ry="26"/>
+        <ellipse cx="622" cy="646" rx="22" ry="18"/>
+        <ellipse cx="576" cy="712" rx="22" ry="16"/>
+      </g>
+      <!-- soft gray cornice with white ticks under spire -->
+      <g id="tower-arcade">
+        <path d="M519,438 L681,438 L677,466 L523,466 Z" fill="#8b8683" stroke="#6e6a66" stroke-width="2.5" filter="url(#wc)"/>
+        <g stroke="#f5f2ec" stroke-width="3" stroke-linecap="round" opacity="0.9">
+          <path d="M543,446 L542,459"/><path d="M556,445 L555,460"/><path d="M569,445 L568,460"/>
+          <path d="M582,444 L582,460"/><path d="M596,444 L596,461"/><path d="M610,444 L610,461"/>
+          <path d="M624,444 L624,460"/><path d="M637,445 L638,460"/><path d="M650,445 L651,459"/>
+        </g>
+      </g>
+      <!-- periwinkle spire with antenna fletch -->
+      <g id="spire">
+        <path d="M601,330 L601,356 M592,338 C597,345 600,350 601,354 M610,338 C605,345 602,350 601,354"
+              fill="none" stroke="#8a8a86" stroke-width="3" stroke-linecap="round"/>
+        <path id="tower-spire" d="M600,354 C568,378 534,412 518,440 L684,440 C668,412 632,378 600,354 Z"
+              fill="url(#g-spire)" filter="url(#wc)"/>
+        <path d="M600,362 C574,384 542,414 528,438 M600,362 C626,384 658,414 672,438"
+              fill="none" stroke="#8b98c8" stroke-width="7" opacity="0.6" filter="url(#soft2)"/>
+        <path id="tower-spire-line" d="M600,354 C568,378 534,412 518,440 L684,440 C668,412 632,378 600,354 Z"
+              fill="none" stroke="#6d6863" stroke-width="3.5"/>
+      </g>
+      <!-- twin belfry windows with arched pencil brows -->
+      <g id="tower-windows">
+        <path d="M561,522 L561,488 C561,468 583,468 583,488 L583,522 Z" fill="#5e5348" stroke="#8a7a68" stroke-width="3"/>
+        <path d="M595,522 L595,488 C595,468 617,468 617,488 L617,522 Z" fill="#5e5348" stroke="#8a7a68" stroke-width="3"/>
+        <g stroke="#f0e8da" stroke-width="2" fill="none">
+          <path d="M572,472 L572,520 M562,498 L582,498"/>
+          <path d="M606,472 L606,520 M596,498 L616,498"/>
+        </g>
+        <path d="M557,527 L587,527 M591,527 L621,527" fill="none" stroke="#d9cdb8" stroke-width="3"/>
+      </g>
+      <!-- clock -->
+      <g id="clock">
+        <circle cx="605" cy="568" r="16" fill="#f2e8da" stroke="#a5714f" stroke-width="4"/>
+        <g id="clock-hands" stroke="#4a443e" stroke-width="3" stroke-linecap="round">
+          <path d="M605,568 L605,557"/>
+          <path d="M605,568 L613,571"/>
+        </g>
+      </g>
+      <!-- US flag hanging diagonally from the tower -->
+      <g id="tower-flag">
+        <path d="M612,600 L614,660" stroke="#6e6a66" stroke-width="3" fill="none"/>
+        <g transform="rotate(24 613 606)">
+          <rect x="613" y="606" width="42" height="34" fill="#fbf8f2" stroke="#7a746e" stroke-width="2.5"/>
+          <g stroke="#c4595a" stroke-width="3.5">
+            <path d="M632,613 L654,613"/><path d="M614,621 L654,621"/><path d="M614,629 L654,629"/><path d="M614,637 L654,637"/>
+          </g>
+          <rect x="613" y="606" width="19" height="13" fill="#8892bd"/>
+          <g fill="#f5f2ec">
+            <circle cx="618" cy="610" r="1.4"/><circle cx="624" cy="612" r="1.4"/><circle cx="628" cy="609" r="1.4"/><circle cx="620" cy="615" r="1.4"/>
+          </g>
+        </g>
+      </g>
+      <!-- tiered entrance porch -->
+      <g id="entrance">
+        <path d="M556,748 L558,714 C560,702 640,702 644,714 L646,748 Z" fill="#fbf7ef" stroke="#948d84" stroke-width="3"/>
+        <path d="M540,790 L543,748 L659,748 L662,790 Z" fill="#fbf7ef" stroke="#948d84" stroke-width="3"/>
+        <!-- pale arched door -->
+        <path id="door" d="M582,790 L582,740 C582,714 632,714 632,740 L632,790 Z"
+              fill="#d9c0a2" stroke="#8f8880" stroke-width="3"/>
+        <path d="M586,744 C592,728 622,728 628,744" fill="none" stroke="#c9beae" stroke-width="2.5" opacity="0.8"/>
+      </g>
+      <!-- candelabra topiaries flanking the door -->
+      <g id="topiaries" stroke="#7d776e" stroke-width="3" fill="none" stroke-linecap="round">
+        <g id="topiary-left">
+          <path d="M560,786 L560,758 M560,766 C553,761 549,754 550,747 M560,766 C567,761 571,754 570,747 M560,758 L560,749"/>
+          <circle cx="550" cy="745" r="3.5" fill="#97a184" stroke="none"/><circle cx="570" cy="745" r="3.5" fill="#97a184" stroke="none"/><circle cx="560" cy="746" r="3.5" fill="#97a184" stroke="none"/>
+        </g>
+        <g id="topiary-right">
+          <path d="M654,786 L654,758 M654,766 C647,761 643,754 644,747 M654,766 C661,761 665,754 664,747 M654,758 L654,749"/>
+          <circle cx="644" cy="745" r="3.5" fill="#97a184" stroke="none"/><circle cx="664" cy="745" r="3.5" fill="#97a184" stroke="none"/><circle cx="654" cy="746" r="3.5" fill="#97a184" stroke="none"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- pale sage grass at the building base -->
+    <g id="grass">
+      <path id="grass-bank-left" d="M306,752 C330,742 370,740 410,746 C450,740 500,742 536,748 L540,786 C460,792 370,790 308,782 Z"
+            fill="url(#g-grass)" filter="url(#wc)"/>
+      <path id="grass-bank-right" d="M662,748 C700,742 750,740 790,746 C840,742 884,744 906,754 L904,782 C820,790 730,792 660,786 Z"
+            fill="url(#g-grass)" filter="url(#wc)"/>
+      <g stroke="#a8c398" stroke-width="3" opacity="0.8" fill="none" stroke-linecap="round">
+        <path d="M350,768 C365,764 380,764 392,766"/>
+        <path d="M720,770 C735,766 752,766 764,768"/>
+        <path d="M440,776 C456,772 472,772 484,774"/>
+        <path d="M332,756 l6,-10 M364,754 l5,-9 M773,756 l6,-10 M804,758 l5,-9 M496,752 l5,-9 M700,754 l5,-9"/>
+      </g>
+    </g>
+
+    <!-- front steps: pale gray tiers, no hard outline -->
+    <g id="steps" transform="translate(9,0)">
+      <g fill="#e3e2df" stroke="none" filter="url(#wc)">
+        <path d="M574,788 C600,782 630,782 656,788 C662,794 662,802 656,806 C620,812 606,812 572,806 C566,800 568,792 574,788 Z"/>
+        <path d="M556,806 C600,800 650,800 678,806 C684,814 684,822 678,826 C630,832 600,832 550,826 C544,818 546,810 556,806 Z"/>
+        <path d="M532,826 C590,818 660,818 704,826 C712,834 712,842 704,846 C640,854 590,854 526,846 C518,838 520,830 532,826 Z"/>
+      </g>
+      <g fill="none" stroke="#a9a6a0" stroke-width="3" opacity="0.9" stroke-linecap="round">
+        <path d="M584,796 C610,792 636,792 650,796"/>
+        <path d="M568,814 C606,810 650,810 672,814"/>
+        <path d="M544,834 C600,828 660,828 692,834"/>
+        <path d="M560,846 C600,842 650,842 684,846"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================= the couple ================= -->
+  <g id="couple" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- ======== Sophie (left) ======== -->
+    <g id="sophie">
+      <g id="sophie-flag">
+        <path d="M505,856 L516,824" stroke="#8a7a68" stroke-width="3" fill="none"/>
+        <use href="#pride-flag" transform="translate(506,798) rotate(20) scale(0.85)"/>
+      </g>
+      <g id="sophie-ponytail" filter="url(#wc2)">
+        <path d="M374,806 C340,798 314,822 304,862 C294,904 296,944 306,978 C311,994 317,1004 322,1010" fill="none" stroke="#75655a" stroke-width="19" stroke-linecap="round"/>
+        <path d="M372,812 C346,818 330,846 325,884 C319,924 323,962 333,992" fill="none" stroke="#69594e" stroke-width="16" stroke-linecap="round"/>
+        <path d="M376,818 C360,834 351,868 350,906 C349,938 353,972 361,994" fill="none" stroke="#75655a" stroke-width="14" stroke-linecap="round"/>
+        <path d="M378,824 C370,846 366,882 367,916 C368,944 371,968 375,986" fill="none" stroke="#5f4f44" stroke-width="10" stroke-linecap="round"/>
+        <path d="M306,880 C299,918 301,958 310,992" fill="none" stroke="#55463c" stroke-width="7" stroke-linecap="round"/>
+        <path d="M334,868 C328,908 330,952 339,990" fill="none" stroke="#8b7a6d" stroke-width="6" stroke-linecap="round"/>
+        <path d="M358,878 C354,914 355,952 362,984" fill="none" stroke="#55463c" stroke-width="5" stroke-linecap="round"/>
+        <path d="M306,978 C302,992 300,1004 301,1014 M322,992 C320,1004 320,1014 322,1022 M344,986 C342,1000 343,1012 346,1022 M362,982 C362,994 364,1004 367,1014" fill="none" stroke="#6b5b50" stroke-width="5" stroke-linecap="round"/>
+        <path d="M372,804 C378,796 388,796 392,804 C396,812 390,820 382,820 C374,820 368,812 372,804 Z" fill="#3f342c"/>
+      </g>
+      <!-- arms drawn under the shirt -->
+      <g id="sophie-arm-left">
+        <path d="M416,1030 C402,1066 388,1104 380,1136" stroke="#59524c" stroke-width="13" fill="none"/>
+        <path d="M416,1030 C402,1066 388,1104 380,1136" stroke="#f5efe7" stroke-width="8.5" fill="none"/>
+        <circle id="sophie-hand-left" cx="379" cy="1143" r="11" fill="#f5efe7" stroke="#59524c" stroke-width="3"/>
+      </g>
+      <g id="sophie-arm-right">
+        <path d="M523,1014 C560,1014 600,1022 634,1036" stroke="#59524c" stroke-width="13" fill="none"/>
+        <path d="M523,1014 C560,1014 600,1022 634,1036" stroke="#f5efe7" stroke-width="8.5" fill="none"/>
+      </g>
+      <!-- gray shorts + skin legs + pink-and-lilac shoes -->
+      <g id="sophie-shorts" transform="translate(38,0)">
+        <path d="M412,1078 C440,1071 466,1071 496,1078 L505,1180 L464,1184 L452,1128 L441,1184 L404,1180 Z"
+              fill="url(#g-shorts-sophie)" stroke="#75726f" stroke-width="3.5" filter="url(#wc)"/>
+        <path d="M496,1090 C500,1120 504,1150 507,1174" stroke="#a2a2a8" stroke-width="7" opacity="0.6" fill="none" filter="url(#soft2)"/>
+      </g>
+      <g id="sophie-legs" transform="translate(38,0)">
+        <path d="M424,1182 L421,1208" stroke="#59524c" stroke-width="11" fill="none"/>
+        <path d="M424,1182 L421,1208" stroke="#f5efe7" stroke-width="7" fill="none"/>
+        <path d="M482,1184 L484,1208" stroke="#59524c" stroke-width="11" fill="none"/>
+        <path d="M482,1184 L484,1208" stroke="#f5efe7" stroke-width="7" fill="none"/>
+        <ellipse id="sophie-shoe-left" cx="419" cy="1218" rx="15" ry="8" fill="#f7f1f2" stroke="#a89aa0" stroke-width="3"/>
+        <ellipse id="sophie-shoe-right" cx="484" cy="1218" rx="15" ry="8" fill="#f7f1f2" stroke="#a89aa0" stroke-width="3"/>
+        <path d="M402,1220 C407,1215 413,1214 418,1216" stroke="#eba0bc" stroke-width="4" fill="none"/>
+        <path d="M472,1220 C477,1215 483,1214 488,1216" stroke="#eba0bc" stroke-width="4" fill="none"/>
+        <path d="M420,1226 l6,0 M482,1226 l6,0" stroke="#c1a3dd" stroke-width="3.5" fill="none"/>
+      </g>
+      <!-- neck (collar overlaps its base, chin overlaps its top) -->
+      <path id="sophie-neck" d="M453,945 L473,945 L475,990 L451,990 Z" fill="#f5efe7" stroke="#cbbfae" stroke-width="2.5"/>
+      <!-- dusty-rose floral shirt -->
+      <g id="sophie-shirt" transform="translate(18,0)">
+        <path d="M404,982 C426,973 478,973 500,982 L513,1102 C470,1114 430,1114 389,1102 Z"
+              fill="url(#g-shirt)" stroke="#8a625c" stroke-width="3.5" filter="url(#wc)"/>
+        <path d="M404,984 L378,1026 L400,1038 L405,1016 Z" fill="url(#g-shirt)" stroke="#8a625c" stroke-width="3.5"/>
+        <path d="M499,984 L525,1024 L503,1036 L498,1016 Z" fill="url(#g-shirt)" stroke="#8a625c" stroke-width="3.5"/>
+        <path d="M500,1000 C504,1030 507,1060 508,1084" stroke="#b47a74" stroke-width="9" opacity="0.55" fill="none" filter="url(#soft)"/>
+        <path d="M398,1086 C430,1094 470,1094 504,1086" stroke="#b47a74" stroke-width="8" opacity="0.5" fill="none" filter="url(#soft)"/>
+        <path id="sophie-collar" d="M427,979 C443,987 462,987 476,978" fill="none" stroke="#59524c" stroke-width="3.5"/>
+        <g id="sophie-shirt-flowers" opacity="0.85" transform="translate(456,1032) scale(0.82) translate(-456,-1032)">
+          <use href="#blossom" transform="translate(430,1000) rotate(10)"/>
+          <use href="#blossom" transform="translate(476,988) rotate(-15) scale(0.9)"/>
+          <use href="#blossom" transform="translate(452,1032) rotate(25) scale(1.1)"/>
+          <use href="#blossom" transform="translate(494,1052) rotate(-8) scale(0.95)"/>
+          <use href="#blossom" transform="translate(414,1054) rotate(18)"/>
+          <use href="#blossom" transform="translate(462,1076) rotate(-22) scale(0.85)"/>
+          <use href="#blossom" transform="translate(438,1064) rotate(55) scale(0.7)"/>
+          <use href="#blossom" transform="translate(390,1020) rotate(40) scale(0.8)"/>
+          <use href="#blossom" transform="translate(512,1016) rotate(-35) scale(0.8)"/>
+        </g>
+      </g>
+      <!-- head + face -->
+      <g id="sophie-head" transform="translate(450,958) scale(1.13) translate(-450,-958)">
+        <path id="sophie-face-shape" d="M391,910 C384,860 406,829 448,827 C492,825 514,858 510,906 C507,942 484,959 449,960 C416,961 397,944 391,910 Z"
+              fill="#f5efe7" stroke="#59524c" stroke-width="3"/>
+        <g id="sophie-hair-front">
+          <path id="sophie-bangs" d="M389,884 C377,838 404,812 448,810 C496,808 520,838 511,880 C505,862 497,858 488,868 C480,854 463,851 451,862 C441,850 421,854 414,872 C407,860 396,864 389,884 Z"
+                fill="#7d716a" stroke="#5b514a" stroke-width="2.8" filter="url(#wc2)"/>
+          <g id="sophie-hair-texture" fill="none" stroke-linecap="round">
+            <path d="M410,836 C428,824 452,821 474,828" stroke="#7d675a" stroke-width="5"/>
+            <path d="M396,860 C406,842 422,830 440,827" stroke="#33261c" stroke-width="4" opacity="0.9"/>
+            <path d="M466,830 C486,834 502,848 509,866" stroke="#33261c" stroke-width="4" opacity="0.9"/>
+            <path d="M428,870 C437,860 450,857 460,861" stroke="#7d675a" stroke-width="4"/>
+            <path d="M406,892 C409,880 416,872 424,869" stroke="#33261c" stroke-width="3.5" opacity="0.8"/>
+            <path d="M480,886 C485,876 493,870 502,869" stroke="#7d675a" stroke-width="3.5"/>
+          </g>
+          <path id="sophie-hair-side-l" d="M390,872 C383,888 383,906 388,920 C393,907 394,889 392,876 Z" fill="#7d716a" stroke="#5b514a" stroke-width="2.5" filter="url(#wc2)"/>
+          <path id="sophie-hair-side-r" d="M508,866 C518,884 519,906 512,924 C504,908 502,884 505,870 Z" fill="#7d716a" stroke="#5b514a" stroke-width="2.5" filter="url(#wc2)"/>
+        </g>
+        <g id="sophie-blush" fill="#e0b09c" opacity="0.06">
+          <ellipse cx="406" cy="930" rx="9" ry="5"/>
+          <ellipse cx="491" cy="928" rx="9" ry="5"/>
+        </g>
+        <g id="sophie-glasses" transform="translate(448,901) scale(1.1) translate(-448,-901)" fill="none" stroke="#57534d" stroke-width="3.8" stroke-linecap="round" opacity="0.9">
+          <path d="M417,878 C431,877 442,889 441,903 C440,917 430,927 416,926 C403,925 393,915 394,901 C395,888 404,879 417,878 Z"/>
+          <path d="M478,876 C492,876 503,887 502,902 C501,916 490,925 477,924 C464,923 454,913 455,899 C456,886 465,876 478,876 Z"/>
+          <path d="M441,899 L455,897"/>
+          <path d="M394,897 L384,892 M502,894 L512,889"/>
+        </g>
+        <g id="sophie-face" transform="translate(448,901) scale(1.1) translate(-448,-901)">
+          <circle cx="417" cy="904" r="10" fill="#35302b"/>
+          <circle cx="478" cy="902" r="10" fill="#35302b"/>
+          <circle cx="414" cy="901" r="3.2" fill="#f7f2e8" opacity="0.9"/>
+          <circle cx="475" cy="899" r="3.2" fill="#f7f2e8" opacity="0.9"/>
+          <path id="sophie-smile" d="M438,933 Q450,948 464,934 Q451,941 438,933 Z" fill="#5a534c" stroke="#5a534c" stroke-width="2" stroke-linejoin="round"/>
+        </g>
+      </g>
+      <use id="sophie-sparkle" href="#sparkle" transform="translate(350,1174) scale(0.9)" stroke="#e8c23e" stroke-width="4"/>
+    </g>
+
+    <!-- ======== Alex (right) ======== -->
+    <g id="alex">
+      <g id="alex-flag">
+        <path d="M748,856 L736,826" stroke="#8a7a68" stroke-width="3" fill="none"/>
+        <use href="#pride-flag" transform="translate(700,808) rotate(-19) scale(0.85)"/>
+      </g>
+      <!-- arms under the polo -->
+      <g id="alex-arm-right">
+        <path d="M874,1048 C888,1064 898,1082 903,1100" stroke="#59524c" stroke-width="13" fill="none"/>
+        <path d="M874,1048 C888,1064 898,1082 903,1100" stroke="#f5efe7" stroke-width="8.5" fill="none"/>
+        <circle id="alex-hand-right" cx="905" cy="1108" r="11" fill="#f5efe7" stroke="#59524c" stroke-width="3"/>
+      </g>
+      <g id="alex-arm-left">
+        <path d="M706,1044 C690,1042 676,1040 662,1040" stroke="#59524c" stroke-width="13" fill="none"/>
+        <path d="M706,1044 C690,1042 676,1040 662,1040" stroke="#f5efe7" stroke-width="8.5" fill="none"/>
+      </g>
+      <!-- legs + dusty-red shoes -->
+      <g id="alex-legs">
+        <path d="M741,1160 L738,1226" stroke="#59524c" stroke-width="12" fill="none"/>
+        <path d="M741,1160 L738,1226" stroke="#f5efe7" stroke-width="8" fill="none"/>
+        <path d="M801,1160 L803,1226" stroke="#59524c" stroke-width="12" fill="none"/>
+        <path d="M801,1160 L803,1226" stroke="#f5efe7" stroke-width="8" fill="none"/>
+        <ellipse id="alex-shoe-left" cx="726" cy="1240" rx="23" ry="12" fill="#c98084" stroke="#8d5c5e" stroke-width="3"/>
+        <ellipse id="alex-shoe-right" cx="812" cy="1240" rx="23" ry="12" fill="#c98084" stroke="#8d5c5e" stroke-width="3"/>
+        <path d="M716,1236 C722,1232 730,1231 736,1234 M796,1236 C802,1232 810,1231 816,1234" stroke="#f5efe7" stroke-width="3" fill="none"/>
+      </g>
+      <!-- pale gold shorts -->
+      <path id="alex-shorts" d="M720,1102 L858,1102 L866,1168 L802,1168 L795,1138 L788,1168 L716,1168 Z"
+            fill="url(#g-shorts-alex)" stroke="#a08a55" stroke-width="3.5" filter="url(#wc)"/>
+      <path d="M848,1110 C851,1130 854,1148 856,1160" stroke="#dcae55" stroke-width="8" opacity="0.55" fill="none" filter="url(#soft)"/>
+      <!-- neck (collar overlaps its base, chin overlaps its top) -->
+      <path id="alex-neck" d="M781,944 L801,944 L803,988 L779,988 Z" fill="#f5efe7" stroke="#cbbfae" stroke-width="2.5"/>
+      <!-- pale yellow polo -->
+      <g id="alex-polo">
+        <path d="M716,980 C742,970 842,970 864,980 L888,1105 L696,1105 Z"
+              fill="url(#g-polo)" stroke="#a08a55" stroke-width="3.5" filter="url(#wc)"/>
+        <path d="M722,982 C706,1000 694,1022 690,1042 L716,1052 C720,1032 724,1012 727,1000 Z" fill="url(#g-polo)" stroke="#a08a55" stroke-width="3.5"/>
+        <path d="M858,982 C874,1000 886,1022 890,1042 L864,1052 C860,1032 856,1012 853,1000 Z" fill="url(#g-polo)" stroke="#a08a55" stroke-width="3.5"/>
+        <path d="M856,996 C861,1032 865,1068 867,1098" stroke="#dcae55" stroke-width="10" opacity="0.5" fill="none" filter="url(#soft)"/>
+        <path d="M714,1096 C760,1104 830,1104 866,1096" stroke="#dcae55" stroke-width="8" opacity="0.45" fill="none" filter="url(#soft)"/>
+        <g id="alex-collar" fill="none" stroke="#6a645e" stroke-width="3">
+          <path d="M770,977 L791,1000 L813,976"/>
+          <path d="M791,1000 L791,1028"/>
+        </g>
+        <circle cx="797" cy="1008" r="2.5" fill="#6a645e"/>
+        <circle cx="797" cy="1021" r="2.5" fill="#6a645e"/>
+      </g>
+      <!-- head + face -->
+      <g id="alex-head" transform="translate(795,956) scale(1.06) translate(-795,-956)">
+        <ellipse id="alex-ear-left" cx="728" cy="900" rx="8" ry="12" fill="#f5efe7" stroke="#59524c" stroke-width="2.5"/>
+        <ellipse id="alex-ear-right" cx="855" cy="897" rx="8" ry="12" fill="#f5efe7" stroke="#59524c" stroke-width="2.5"/>
+        <path id="alex-face-shape" d="M731,906 C724,856 748,827 790,825 C833,823 856,853 852,902 C849,938 826,957 791,958 C757,959 738,940 731,906 Z"
+              fill="#f5efe7" stroke="#59524c" stroke-width="3"/>
+        <g id="alex-hair">
+          <path id="alex-hair-top" d="M732,880 C714,834 728,806 750,798 C756,786 772,782 782,788 C790,778 808,778 818,788 C830,782 844,790 848,802 C858,816 856,846 850,878 C844,852 834,844 824,850 C817,836 802,833 792,842 C782,831 764,834 757,845 C747,838 737,844 735,858 C734,865 733,872 732,880 Z"
+                fill="#97785f" stroke="#6d563f" stroke-width="2.8" filter="url(#wc2)"/>
+          <path id="alex-hair-side-r" d="M847,862 C856,872 858,888 853,898 C848,891 844,878 843,870 Z" fill="#97785f" stroke="#6d563f" stroke-width="2.5"/>
+          <path id="alex-hair-side-l" d="M735,864 C728,874 726,890 730,900 C735,893 738,880 738,870 Z" fill="#97785f" stroke="#6d563f" stroke-width="2.5"/>
+          <g id="alex-hair-texture" fill="none" stroke-linecap="round">
+            <path d="M750,810 C768,796 796,794 814,804" stroke="#9c7a5e" stroke-width="5"/>
+            <path d="M774,794 C784,786 800,786 808,792" stroke="#9c7a5e" stroke-width="4"/>
+            <path d="M738,834 C746,812 760,800 778,796" stroke="#4e3826" stroke-width="4" opacity="0.9"/>
+            <path d="M812,798 C830,806 842,822 846,840" stroke="#4e3826" stroke-width="4" opacity="0.9"/>
+            <path d="M762,852 C770,840 783,834 796,837" stroke="#9c7a5e" stroke-width="4"/>
+            <path d="M816,852 C823,842 833,838 842,843" stroke="#4e3826" stroke-width="3.5" opacity="0.8"/>
+            <path d="M736,864 C739,854 746,848 754,847" stroke="#9c7a5e" stroke-width="3.5"/>
+          </g>
+        </g>
+        <g id="alex-blush" fill="#e0b09c" opacity="0.06">
+          <ellipse cx="747" cy="924" rx="9" ry="5"/>
+          <ellipse cx="836" cy="921" rx="9" ry="5"/>
+        </g>
+        <g id="alex-glasses" transform="translate(791,896) scale(1.1) translate(-791,-896)" fill="none" stroke="#57534d" stroke-width="3.8" stroke-linecap="round" opacity="0.9">
+          <path d="M760,872 C775,871 787,883 786,899 C785,914 774,925 759,924 C745,923 734,912 735,897 C736,883 746,873 760,872 Z"/>
+          <path d="M823,871 C838,871 849,882 848,897 C847,912 836,923 822,922 C808,921 797,910 798,895 C799,881 809,871 823,871 Z"/>
+          <path d="M786,895 L798,893"/>
+          <path d="M735,894 L725,889 M848,891 L858,886"/>
+        </g>
+        <g id="alex-face" transform="translate(791,896) scale(1.1) translate(-791,-896)">
+          <circle cx="760" cy="899" r="10" fill="#35302b"/>
+          <circle cx="822" cy="897" r="10" fill="#35302b"/>
+          <circle cx="757" cy="896" r="3.2" fill="#f7f2e8" opacity="0.9"/>
+          <circle cx="819" cy="894" r="3.2" fill="#f7f2e8" opacity="0.9"/>
+          <path id="alex-smile" d="M776,929 Q789,944 803,930 Q790,937 776,929 Z" fill="#5a534c" stroke="#5a534c" stroke-width="2" stroke-linejoin="round"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- clasped hands as a little heart -->
+    <path id="held-hands" transform="translate(648,1040) scale(1.15) translate(-648,-1026)" d="M648,1016 C642,1005 624,1009 626,1021 C627,1031 638,1037 648,1045 C658,1037 669,1031 670,1021 C672,1009 654,1005 648,1016 Z"
+          fill="#faf6f0" stroke="#59524c" stroke-width="3.5"/>
+  </g>
+
+  <!-- ================= names: SOPHIE & ALEX (gently arched) ================= -->
+  <g id="names" fill="#5d5d5b" fill-opacity="0.92" fill-rule="evenodd" filter="url(#pencil)">
+    <path id="names-0" d="M419.0,1403.5 L416.0,1403.5 L413.5,1402.0 L415.0,1400.5 L418.0,1400.5 L420.0,1399.5 L423.5,1396.0 L424.5,1394.0 L424.5,1391.0 L423.5,1389.0 L421.0,1386.5 L419.0,1386.5 L414.0,1383.5 L412.0,1383.5 L409.0,1381.5 L406.0,1381.5 L404.0,1379.5 L401.0,1379.5 L397.5,1375.0 L396.5,1373.0 L396.5,1370.0 L395.5,1369.0 L396.5,1365.0 L399.5,1360.0 L407.0,1354.5 L416.0,1354.5 L418.5,1357.0 L418.5,1358.0 L415.0,1359.5 L411.0,1358.5 L405.5,1364.0 L406.5,1374.0 L409.0,1376.5 L413.0,1378.5 L415.0,1378.5 L419.0,1380.5 L422.0,1380.5 L432.0,1385.5 L434.5,1391.0 L431.0,1397.5 L430.0,1397.5 L426.0,1401.5 L424.0,1402.5 L420.0,1402.5 L419.0,1403.5 Z"/>
+    <path id="names-1" d="M455.0,1388.5 L448.0,1388.5 L444.0,1386.5 L437.5,1380.0 L436.5,1376.0 L433.5,1372.0 L433.5,1370.0 L432.5,1369.0 L433.5,1368.0 L430.5,1364.0 L430.5,1357.0 L431.5,1356.0 L431.5,1353.0 L435.0,1348.5 L441.0,1347.5 L442.0,1348.5 L446.0,1348.5 L447.0,1349.5 L449.0,1349.5 L454.5,1354.0 L455.5,1358.0 L460.5,1365.0 L459.5,1368.0 L461.5,1370.0 L461.5,1384.0 L458.0,1387.5 L456.0,1387.5 L455.0,1388.5 Z M452.5,1383.0 L453.5,1382.0 L453.5,1377.0 L452.5,1376.0 L453.5,1373.0 L449.5,1365.0 L449.5,1363.0 L450.5,1362.0 L446.5,1357.0 L446.5,1356.0 L444.0,1353.5 L440.0,1351.5 L438.5,1353.0 L438.5,1359.0 L439.5,1360.0 L439.5,1362.0 L438.5,1363.0 L441.5,1369.0 L441.5,1373.0 L451.0,1383.5 L452.5,1383.0 Z"/>
+    <path id="names-2" d="M476.0,1382.5 L473.0,1382.5 L469.5,1378.0 L465.5,1369.0 L463.5,1367.0 L463.5,1365.0 L460.5,1362.0 L460.5,1359.0 L456.5,1352.0 L456.5,1348.0 L455.5,1347.0 L455.5,1345.0 L452.5,1342.0 L460.0,1336.5 L474.0,1336.5 L478.5,1341.0 L477.5,1342.0 L478.5,1347.0 L476.5,1349.0 L475.5,1352.0 L469.5,1358.0 L470.5,1362.0 L473.5,1366.0 L474.5,1371.0 L477.5,1373.0 L477.5,1378.0 L479.5,1381.0 L476.0,1382.5 Z M466.5,1351.0 L469.5,1348.0 L469.5,1342.0 L467.0,1339.5 L463.0,1339.5 L461.5,1341.0 L460.5,1345.0 L463.5,1347.0 L464.5,1350.0 L466.0,1351.5 L466.5,1351.0 Z"/>
+    <path id="names-3" d="M500.0,1368.5 L497.0,1368.5 L496.0,1367.5 L494.0,1367.5 L492.5,1366.0 L492.5,1363.0 L490.5,1360.0 L490.5,1357.0 L488.0,1355.5 L486.5,1353.0 L486.5,1349.0 L484.5,1347.0 L484.5,1345.0 L485.5,1344.0 L482.5,1341.0 L483.5,1338.0 L481.5,1335.0 L483.0,1333.5 L485.0,1333.5 L486.5,1335.0 L486.5,1337.0 L489.5,1340.0 L489.5,1341.0 L487.5,1343.0 L489.0,1344.5 L492.0,1344.5 L494.0,1346.5 L496.0,1346.5 L503.5,1341.0 L500.5,1329.0 L502.0,1327.5 L505.0,1326.5 L506.0,1327.5 L508.0,1327.5 L510.5,1331.0 L510.5,1337.0 L512.5,1339.0 L512.5,1341.0 L514.5,1343.0 L514.5,1345.0 L513.5,1346.0 L516.5,1350.0 L515.5,1352.0 L515.5,1356.0 L517.5,1358.0 L517.5,1361.0 L515.0,1363.5 L512.0,1363.5 L508.5,1359.0 L508.5,1356.0 L506.5,1353.0 L506.5,1350.0 L505.5,1348.0 L504.0,1346.5 L501.0,1346.5 L499.0,1348.5 L497.0,1348.5 L494.5,1351.0 L494.5,1353.0 L497.5,1357.0 L497.5,1359.0 L498.5,1360.0 L497.5,1362.0 L500.5,1366.0 L500.0,1368.5 Z"/>
+    <path id="names-4" d="M538.0,1362.5 L534.0,1362.5 L531.5,1360.0 L531.5,1356.0 L530.5,1355.0 L530.5,1351.0 L529.5,1350.0 L529.5,1345.0 L528.5,1344.0 L528.5,1337.0 L526.5,1335.0 L527.5,1334.0 L527.5,1330.0 L525.5,1328.0 L525.5,1326.0 L530.0,1322.5 L531.0,1323.5 L534.5,1324.0 L534.5,1327.0 L533.5,1329.0 L536.5,1335.0 L537.5,1344.0 L538.5,1345.0 L538.5,1350.0 L539.5,1351.0 L539.5,1356.0 L540.5,1357.0 L540.5,1359.0 L538.0,1362.5 Z"/>
+    <path id="names-5" d="M568.0,1359.5 L562.0,1359.5 L561.0,1358.5 L548.0,1358.5 L545.5,1357.0 L543.5,1353.0 L543.5,1348.0 L544.5,1346.0 L543.5,1345.0 L543.5,1341.0 L542.5,1340.0 L542.5,1337.0 L544.5,1335.0 L542.5,1331.0 L544.5,1328.0 L545.0,1324.5 L547.0,1323.5 L553.0,1323.5 L554.0,1322.5 L561.5,1323.0 L556.0,1324.5 L555.0,1325.5 L552.0,1325.5 L550.5,1327.0 L550.5,1331.0 L549.5,1332.0 L550.5,1335.0 L552.0,1336.5 L556.5,1337.0 L553.0,1337.5 L550.5,1341.0 L550.5,1345.0 L551.5,1346.0 L550.5,1347.0 L552.5,1351.0 L552.5,1353.0 L551.5,1354.0 L553.0,1355.5 L556.0,1355.5 L557.0,1356.5 L559.0,1355.5 L566.0,1356.5 L568.5,1358.0 L568.0,1359.5 Z"/>
+    <path id="names-6" d="M634.0,1363.5 L630.0,1363.5 L628.0,1362.5 L627.5,1358.0 L625.5,1354.0 L624.0,1352.5 L621.0,1352.5 L619.0,1351.5 L613.5,1346.0 L613.5,1345.0 L620.5,1339.0 L620.5,1338.0 L617.5,1336.0 L617.5,1334.0 L618.5,1333.0 L618.5,1325.0 L624.0,1322.5 L625.5,1321.0 L624.5,1320.0 L624.5,1316.0 L625.5,1314.0 L628.0,1312.5 L629.0,1313.5 L632.0,1313.5 L633.5,1315.0 L633.5,1321.0 L638.5,1324.0 L638.0,1325.5 L636.0,1325.5 L634.5,1327.0 L634.5,1333.0 L635.5,1334.0 L635.5,1337.0 L633.5,1340.0 L634.5,1345.0 L636.0,1346.5 L638.0,1345.5 L643.5,1346.0 L642.5,1350.0 L639.0,1353.5 L636.0,1354.5 L634.5,1356.0 L635.5,1362.0 L634.0,1363.5 Z M625.5,1335.0 L626.5,1334.0 L626.5,1331.0 L624.0,1327.5 L621.5,1331.0 L621.5,1333.0 L624.0,1335.5 L625.5,1335.0 Z M625.5,1349.0 L626.5,1348.0 L625.5,1347.0 L626.5,1346.0 L626.5,1343.0 L625.0,1341.5 L622.0,1343.5 L620.5,1346.0 L623.0,1348.5 L625.0,1349.5 L625.5,1349.0 Z"/>
+    <path id="names-7" d="M745.0,1357.5 L738.5,1354.0 L739.5,1352.0 L738.5,1351.0 L739.5,1349.0 L739.5,1341.0 L738.0,1339.5 L732.0,1339.5 L730.5,1341.0 L730.5,1343.0 L728.5,1347.0 L728.5,1350.0 L726.0,1352.5 L724.0,1352.5 L717.5,1347.0 L717.5,1345.0 L719.5,1343.0 L723.5,1335.0 L723.5,1333.0 L726.5,1329.0 L728.5,1324.0 L733.5,1318.0 L733.5,1317.0 L736.5,1315.0 L738.0,1312.5 L744.0,1313.5 L749.5,1320.0 L748.5,1321.0 L749.5,1323.0 L749.5,1335.0 L748.5,1336.0 L748.5,1341.0 L747.5,1342.0 L746.5,1355.0 L745.0,1357.5 Z M739.5,1336.0 L741.5,1332.0 L741.5,1328.0 L742.5,1327.0 L741.0,1325.5 L737.5,1329.0 L737.5,1330.0 L734.5,1332.0 L734.5,1334.0 L736.0,1335.5 L738.0,1335.5 L739.0,1336.5 L739.5,1336.0 Z"/>
+    <path id="names-8" d="M774.0,1364.5 L764.0,1364.5 L763.0,1363.5 L761.0,1363.5 L758.0,1361.5 L753.5,1356.0 L753.5,1351.0 L754.5,1350.0 L754.5,1347.0 L756.5,1344.0 L756.5,1341.0 L758.5,1339.0 L761.5,1331.0 L764.5,1328.0 L765.5,1325.0 L768.0,1323.5 L772.0,1324.5 L773.5,1327.0 L769.5,1332.0 L769.5,1335.0 L767.5,1337.0 L766.5,1341.0 L764.5,1343.0 L765.5,1345.0 L763.5,1347.0 L761.5,1357.0 L763.0,1358.5 L772.0,1360.5 L774.5,1363.0 L774.0,1364.5 Z"/>
+    <path id="names-9" d="M827.0,1384.5 L824.0,1384.5 L820.5,1381.0 L819.5,1379.0 L819.5,1369.0 L818.0,1367.5 L808.0,1378.5 L806.0,1378.5 L802.0,1374.5 L792.0,1374.5 L791.0,1373.5 L785.0,1372.5 L782.0,1369.5 L780.0,1369.5 L777.5,1367.0 L777.5,1365.0 L775.5,1363.0 L777.5,1359.0 L777.5,1356.0 L778.5,1355.0 L779.5,1350.0 L788.0,1333.5 L792.0,1334.5 L795.5,1338.0 L794.5,1339.0 L794.5,1342.0 L792.5,1344.0 L792.5,1345.0 L794.0,1346.5 L797.0,1346.5 L799.0,1347.5 L801.5,1350.0 L800.0,1351.5 L794.0,1351.5 L793.0,1350.5 L791.0,1350.5 L788.5,1353.0 L788.5,1356.0 L783.5,1363.0 L784.5,1364.0 L784.5,1367.0 L786.0,1368.5 L790.0,1368.5 L794.0,1370.5 L797.0,1370.5 L799.0,1372.5 L800.0,1372.5 L803.5,1369.0 L803.5,1368.0 L819.5,1352.0 L820.0,1336.5 L825.5,1341.0 L826.5,1347.0 L828.0,1348.5 L833.0,1345.5 L835.0,1345.5 L838.5,1348.0 L839.5,1352.0 L838.0,1353.5 L834.0,1354.5 L832.5,1357.0 L829.0,1358.5 L826.5,1362.0 L826.5,1376.0 L827.5,1377.0 L827.5,1379.0 L826.5,1380.0 L827.5,1382.0 L827.0,1384.5 Z"/>
+    <path id="names-10" d="M803.0,1336.5 L801.0,1336.5 L800.0,1335.5 L796.0,1335.5 L790.5,1331.0 L795.0,1330.5 L796.0,1331.5 L801.0,1331.5 L804.5,1334.0 L803.0,1336.5 Z"/>
+  </g>
+
+  <!-- ================= footer: COME TO OUR CITY HALL CEREMONY! ================= -->
+  <g id="footer" fill="#636563" fill-opacity="0.92" fill-rule="evenodd" filter="url(#pencil)">
+    <path id="footer-0" d="M357.0,1476.5 L350.0,1476.5 L347.5,1473.0 L346.5,1468.0 L345.5,1467.0 L346.5,1466.0 L346.5,1464.0 L345.5,1463.0 L347.5,1461.0 L346.5,1459.0 L353.0,1453.5 L355.0,1453.5 L356.5,1455.0 L352.5,1458.0 L351.5,1460.0 L351.5,1465.0 L350.5,1466.0 L352.5,1469.0 L352.5,1472.0 L354.0,1473.5 L358.0,1472.5 L359.5,1474.0 L357.0,1476.5 Z"/>
+    <path id="footer-1" d="M372.0,1475.5 L367.0,1475.5 L363.5,1473.0 L365.5,1470.0 L362.5,1467.0 L362.5,1465.0 L365.0,1462.5 L366.5,1464.0 L366.5,1470.0 L369.0,1472.5 L370.5,1471.0 L370.5,1468.0 L371.5,1467.0 L371.5,1463.0 L368.0,1458.5 L367.0,1458.5 L365.0,1461.5 L363.5,1460.0 L363.5,1458.0 L366.0,1455.5 L370.0,1455.5 L373.0,1458.5 L374.0,1458.5 L375.5,1461.0 L375.5,1466.0 L374.5,1467.0 L375.5,1470.0 L372.0,1475.5 Z"/>
+    <path id="footer-2" d="M401.0,1477.5 L397.5,1477.0 L397.5,1474.0 L395.5,1471.0 L396.5,1469.0 L394.0,1466.5 L391.0,1466.5 L389.0,1464.5 L387.5,1466.0 L388.5,1467.0 L387.5,1475.0 L381.5,1475.0 L381.5,1473.0 L382.5,1472.0 L380.5,1469.0 L380.5,1462.0 L379.5,1461.0 L379.5,1456.0 L381.0,1454.5 L384.0,1454.5 L387.5,1458.0 L387.5,1460.0 L392.0,1465.5 L394.5,1464.0 L394.5,1461.0 L393.5,1459.0 L395.5,1457.0 L395.5,1455.0 L399.0,1454.5 L400.5,1456.0 L399.5,1457.0 L399.5,1460.0 L400.5,1461.0 L400.5,1464.0 L401.5,1465.0 L400.5,1466.0 L402.5,1468.0 L401.5,1469.0 L401.5,1474.0 L402.5,1476.0 L401.0,1477.5 Z M415.0,1473.5 L408.0,1473.5 L404.5,1471.0 L404.5,1469.0 L402.5,1467.0 L404.5,1465.0 L403.5,1461.0 L405.0,1459.5 L408.0,1462.5 L410.0,1461.5 L413.5,1462.0 L412.0,1463.5 L408.0,1463.5 L405.5,1466.0 L410.0,1471.5 L416.0,1470.5 L417.5,1472.0 L415.0,1473.5 Z"/>
+    <path id="footer-3" d="M410.0,1456.5 L404.0,1456.5 L403.5,1455.0 L412.0,1454.5 L413.0,1453.5 L414.5,1455.0 L411.0,1455.5 L410.0,1456.5 Z"/>
+    <path id="footer-4" d="M468.0,1473.5 L464.0,1473.5 L463.0,1472.5 L461.0,1472.5 L459.0,1471.5 L457.5,1469.0 L457.5,1467.0 L458.5,1466.0 L457.5,1465.0 L458.5,1464.0 L457.5,1463.0 L457.5,1458.0 L458.5,1457.0 L457.5,1456.0 L461.5,1453.0 L460.5,1452.0 L461.0,1451.5 L465.0,1451.5 L469.0,1453.5 L470.5,1455.0 L473.5,1462.0 L473.5,1468.0 L472.5,1470.0 L468.0,1473.5 Z M451.0,1473.5 L449.0,1473.5 L445.5,1471.0 L445.5,1468.0 L446.5,1467.0 L445.5,1466.0 L446.5,1465.0 L446.5,1459.0 L444.0,1456.5 L441.5,1456.0 L443.0,1454.5 L446.0,1455.5 L450.0,1453.5 L455.0,1453.5 L457.5,1455.0 L455.0,1456.5 L453.0,1456.5 L451.5,1458.0 L451.5,1471.0 L452.5,1472.0 L451.0,1473.5 Z M465.5,1470.0 L467.5,1468.0 L468.5,1460.0 L465.0,1455.5 L462.5,1458.0 L462.5,1468.0 L465.0,1470.5 L465.5,1470.0 Z"/>
+    <path id="footer-5" d="M509.0,1474.5 L501.0,1472.5 L498.5,1469.0 L498.5,1460.0 L499.5,1459.0 L499.5,1453.0 L501.0,1451.5 L503.0,1451.5 L504.0,1450.5 L510.0,1452.5 L514.5,1458.0 L513.5,1460.0 L513.5,1463.0 L514.5,1464.0 L513.5,1465.0 L513.5,1468.0 L511.5,1472.0 L509.0,1474.5 Z M506.5,1470.0 L508.5,1466.0 L508.5,1457.0 L506.0,1454.5 L503.5,1458.0 L504.5,1459.0 L503.5,1461.0 L504.5,1463.0 L504.5,1466.0 L503.5,1467.0 L504.5,1469.0 L506.0,1470.5 L506.5,1470.0 Z"/>
+    <path id="footer-6" d="M535.0,1470.5 L531.0,1470.5 L530.0,1469.5 L528.0,1470.5 L523.0,1470.5 L520.5,1469.0 L518.5,1465.0 L519.5,1464.0 L517.5,1462.0 L518.5,1460.0 L518.5,1456.0 L517.5,1454.0 L520.0,1451.5 L520.5,1455.0 L521.5,1456.0 L520.5,1458.0 L523.5,1462.0 L522.5,1464.0 L524.0,1465.5 L525.5,1464.0 L525.5,1462.0 L526.5,1461.0 L526.5,1452.0 L532.5,1452.0 L532.5,1457.0 L531.5,1458.0 L533.5,1461.0 L533.5,1466.0 L535.5,1469.0 L535.0,1470.5 Z"/>
+    <path id="footer-7" d="M560.0,1471.5 L555.0,1471.5 L549.0,1467.5 L547.5,1469.0 L547.0,1471.5 L541.5,1471.0 L541.5,1468.0 L540.5,1467.0 L541.5,1465.0 L540.5,1464.0 L540.5,1458.0 L539.5,1457.0 L540.0,1449.5 L548.0,1450.5 L551.5,1454.0 L551.5,1458.0 L549.5,1462.0 L556.0,1469.5 L558.0,1470.5 L560.0,1469.5 L560.0,1471.5 Z"/>
+    <path id="footer-8" d="M602.0,1469.5 L595.0,1467.5 L591.5,1463.0 L591.5,1460.0 L592.5,1459.0 L592.5,1454.0 L595.0,1449.5 L601.0,1449.5 L602.5,1451.0 L600.0,1451.5 L598.5,1453.0 L598.5,1455.0 L596.5,1458.0 L596.5,1460.0 L597.5,1461.0 L596.5,1464.0 L598.0,1465.5 L603.0,1463.5 L605.5,1466.0 L604.5,1468.0 L602.0,1469.5 Z"/>
+    <path id="footer-9" d="M613.0,1468.5 L611.0,1468.5 L608.5,1467.0 L609.5,1466.0 L609.5,1464.0 L608.5,1463.0 L608.5,1460.0 L607.5,1458.0 L609.5,1456.0 L608.5,1454.0 L609.0,1450.5 L610.0,1450.5 L612.5,1453.0 L611.5,1454.0 L612.5,1455.0 L612.5,1460.0 L613.5,1461.0 L613.0,1468.5 Z"/>
+    <path id="footer-10" d="M644.0,1470.5 L640.5,1470.0 L640.5,1467.0 L639.5,1466.0 L640.5,1465.0 L639.5,1463.0 L639.5,1460.0 L634.5,1456.0 L635.5,1455.0 L631.0,1450.5 L630.0,1450.5 L627.5,1453.0 L627.5,1457.0 L626.5,1458.0 L627.5,1464.0 L628.5,1465.0 L627.0,1466.5 L624.0,1466.5 L622.5,1465.0 L622.5,1454.0 L620.0,1451.5 L619.0,1451.5 L618.5,1450.0 L629.0,1448.5 L630.0,1449.5 L634.0,1449.5 L638.0,1453.5 L639.0,1453.5 L641.0,1450.5 L645.0,1450.5 L646.5,1452.0 L643.5,1456.0 L643.5,1458.0 L645.5,1462.0 L645.5,1467.0 L644.0,1470.5 Z"/>
+    <path id="footer-11" d="M671.0,1471.5 L666.5,1470.0 L665.5,1468.0 L666.5,1461.0 L664.0,1458.5 L661.5,1461.0 L661.5,1468.0 L660.0,1468.5 L657.5,1467.0 L657.5,1465.0 L656.5,1464.0 L657.5,1462.0 L655.5,1460.0 L657.5,1457.0 L657.5,1454.0 L656.5,1453.0 L657.0,1450.5 L659.0,1450.5 L663.0,1456.5 L665.0,1456.5 L666.5,1455.0 L665.5,1454.0 L666.0,1451.5 L668.0,1451.5 L669.5,1453.0 L669.5,1455.0 L670.5,1456.0 L670.5,1465.0 L671.5,1466.0 L671.5,1469.0 L672.5,1470.0 L671.0,1471.5 Z"/>
+    <path id="footer-12" d="M680.0,1469.5 L679.0,1468.5 L675.5,1468.0 L675.5,1464.0 L676.5,1463.0 L675.5,1462.0 L676.5,1461.0 L676.5,1459.0 L675.5,1458.0 L675.5,1456.0 L676.5,1455.0 L675.5,1454.0 L675.5,1451.0 L679.0,1448.5 L683.0,1448.5 L687.5,1452.0 L687.5,1454.0 L691.5,1460.0 L693.5,1467.0 L692.0,1468.5 L690.0,1467.5 L687.5,1464.0 L687.5,1462.0 L685.0,1460.5 L681.5,1464.0 L681.5,1468.0 L680.0,1469.5 Z"/>
+    <path id="footer-13" d="M704.0,1466.5 L699.0,1466.5 L696.5,1463.0 L696.5,1456.0 L695.5,1455.0 L697.5,1451.0 L696.5,1450.0 L697.0,1449.5 L701.5,1450.0 L701.5,1456.0 L702.5,1457.0 L701.5,1461.0 L703.0,1462.5 L704.0,1461.5 L706.5,1462.0 L706.5,1465.0 L704.0,1466.5 Z"/>
+    <path id="footer-14" d="M721.0,1466.5 L717.0,1466.5 L716.0,1465.5 L713.0,1465.5 L710.5,1464.0 L709.5,1462.0 L709.5,1455.0 L708.5,1454.0 L708.5,1451.0 L710.0,1448.5 L712.5,1449.0 L712.5,1453.0 L715.5,1457.0 L715.5,1459.0 L714.5,1460.0 L715.5,1463.0 L717.0,1464.5 L721.0,1464.5 L722.0,1463.5 L723.5,1464.0 L723.5,1465.0 L721.0,1466.5 Z"/>
+    <path id="footer-15" d="M764.0,1464.5 L761.0,1464.5 L759.0,1463.5 L754.5,1458.0 L754.5,1456.0 L753.5,1455.0 L754.5,1454.0 L754.5,1450.0 L755.5,1448.0 L758.0,1446.5 L763.5,1447.0 L758.5,1451.0 L758.5,1457.0 L759.5,1458.0 L759.5,1460.0 L762.0,1462.5 L765.5,1463.0 L764.0,1464.5 Z"/>
+    <path id="footer-16" d="M776.0,1463.5 L772.0,1463.5 L770.5,1462.0 L771.5,1461.0 L770.5,1460.0 L770.5,1456.0 L769.5,1455.0 L771.5,1452.0 L771.5,1448.0 L770.5,1447.0 L772.0,1445.5 L775.0,1445.5 L776.0,1446.5 L779.5,1447.0 L774.0,1447.5 L772.5,1449.0 L773.5,1450.0 L773.5,1453.0 L775.0,1454.5 L777.5,1455.0 L774.5,1457.0 L774.5,1460.0 L776.0,1461.5 L777.0,1460.5 L780.0,1460.5 L783.5,1462.0 L777.0,1462.5 L776.0,1463.5 Z"/>
+    <path id="footer-17" d="M806.0,1465.5 L799.0,1465.5 L794.0,1462.5 L793.0,1462.5 L791.0,1465.5 L787.0,1464.5 L785.5,1462.0 L786.5,1460.0 L785.5,1458.0 L785.5,1447.0 L792.0,1445.5 L795.5,1449.0 L795.5,1453.0 L791.5,1457.0 L791.5,1458.0 L799.0,1463.5 L801.0,1463.5 L802.5,1462.0 L802.5,1460.0 L801.5,1459.0 L801.5,1455.0 L800.5,1454.0 L802.5,1451.0 L800.5,1449.0 L800.5,1448.0 L802.0,1446.5 L810.0,1446.5 L810.0,1447.5 L806.0,1447.5 L804.5,1449.0 L804.5,1452.0 L807.0,1454.5 L809.0,1453.5 L810.5,1454.0 L810.0,1455.5 L807.0,1455.5 L805.5,1457.0 L805.5,1460.0 L808.0,1462.5 L815.5,1463.0 L812.0,1463.5 L811.0,1464.5 L807.0,1464.5 L806.0,1465.5 Z"/>
+    <path id="footer-18" d="M824.0,1467.5 L819.5,1467.0 L818.5,1449.0 L817.5,1448.0 L820.0,1447.5 L824.0,1449.5 L827.0,1454.5 L829.5,1452.0 L829.5,1450.0 L830.5,1449.0 L829.5,1448.0 L831.0,1446.5 L835.0,1446.5 L835.5,1457.0 L838.5,1464.0 L837.0,1465.5 L834.0,1465.5 L832.5,1463.0 L832.5,1460.0 L831.0,1458.5 L830.0,1459.5 L827.0,1459.5 L826.0,1458.5 L824.5,1460.0 L824.0,1467.5 Z"/>
+    <path id="footer-19" d="M847.0,1465.5 L844.0,1465.5 L842.5,1464.0 L842.5,1462.0 L840.5,1460.0 L840.5,1456.0 L839.5,1455.0 L840.5,1453.0 L839.5,1451.0 L842.0,1447.5 L846.0,1447.5 L847.0,1448.5 L849.0,1448.5 L850.5,1450.0 L851.5,1454.0 L852.5,1455.0 L852.5,1461.0 L851.5,1463.0 L850.0,1464.5 L848.0,1464.5 L847.0,1465.5 Z M847.5,1461.0 L848.5,1460.0 L847.5,1459.0 L848.5,1458.0 L848.5,1456.0 L847.5,1455.0 L847.5,1453.0 L845.0,1450.5 L843.5,1452.0 L844.5,1453.0 L844.5,1455.0 L843.5,1456.0 L845.5,1460.0 L847.0,1461.5 L847.5,1461.0 Z"/>
+    <path id="footer-20" d="M862.0,1463.5 L857.5,1463.0 L857.5,1461.0 L856.5,1460.0 L856.5,1455.0 L855.5,1454.0 L856.5,1452.0 L855.5,1448.0 L857.0,1446.5 L860.0,1446.5 L868.0,1454.5 L869.5,1452.0 L868.5,1451.0 L868.5,1447.0 L867.5,1445.0 L870.0,1443.5 L872.5,1446.0 L872.5,1449.0 L874.5,1452.0 L873.5,1453.0 L874.5,1454.0 L874.5,1458.0 L875.5,1459.0 L874.0,1461.5 L870.0,1462.5 L868.0,1460.5 L867.0,1460.5 L864.0,1456.5 L862.5,1458.0 L862.0,1463.5 Z M870.5,1457.0 L871.5,1456.0 L870.0,1454.5 L868.5,1456.0 L870.0,1457.5 L870.5,1457.0 Z"/>
+    <path id="footer-21" d="M888.0,1462.5 L886.0,1462.5 L883.5,1460.0 L883.5,1455.0 L882.5,1454.0 L882.5,1452.0 L876.5,1447.0 L875.5,1445.0 L876.0,1443.5 L879.0,1444.5 L882.0,1448.5 L885.0,1448.5 L887.0,1446.5 L888.5,1447.0 L888.5,1449.0 L886.5,1451.0 L887.5,1457.0 L888.5,1458.0 L888.0,1462.5 Z"/>
+    <path id="footer-22" d="M903.0,1465.5 L900.0,1465.5 L899.5,1464.0 L901.0,1462.5 L903.0,1462.5 L904.5,1464.0 L903.0,1465.5 Z"/>
+    <path id="footer-23" d="M905.0,1455.5 L901.0,1455.5 L899.5,1453.0 L900.5,1452.0 L899.5,1451.0 L900.0,1443.5 L904.0,1443.5 L905.5,1445.0 L905.0,1455.5 Z"/>
+  </g>
+
+  </g><!-- /#artwork -->
+</svg>
