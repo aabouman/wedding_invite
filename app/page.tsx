@@ -8,6 +8,7 @@ type Phase = "sealed" | "opening" | "revealed";
 type AnimatedSvgRoot = SVGSVGElement & {
   pauseAnimations?: () => void;
   setCurrentTime?: (seconds: number) => void;
+  unpauseAnimations?: () => void;
 };
 
 export default function Home() {
@@ -57,14 +58,23 @@ export default function Home() {
   };
 
   const handleSvgLoad = () => {
+    const root = invitationObject.current?.contentDocument
+      ?.documentElement as AnimatedSvgRoot | undefined;
+
     if (reduceMotion) {
-      const root = invitationObject.current?.contentDocument
-        ?.documentElement as AnimatedSvgRoot | undefined;
       root?.pauseAnimations?.();
       root?.setCurrentTime?.(30);
+      setSvgReady(true);
+      return;
     }
 
+    root?.pauseAnimations?.();
+    root?.setCurrentTime?.(0);
     setSvgReady(true);
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => root?.unpauseAnimations?.());
+    });
   };
 
   const replayInvitation = () => {
@@ -80,30 +90,15 @@ export default function Home() {
     }, 120);
   };
 
-  const instruction =
-    phase === "sealed"
-      ? "Click the envelope to open"
-      : phase === "opening"
-        ? "Your invitation is on its way"
-        : "Save the date";
-
   return (
     <main className={`wedding-page phase-${phase}`}>
       <div className="wash wash-coral" aria-hidden="true" />
       <div className="wash wash-blue" aria-hidden="true" />
-      <div className="thread thread-left" aria-hidden="true">
-        <span />
-      </div>
-      <div className="thread thread-right" aria-hidden="true">
-        <span />
-      </div>
 
       <header className="welcome-copy">
-        <p className="eyebrow">A little something lovely arrived</p>
-        <h1>For you, with love</h1>
         <p className="instruction">
           <span className="instruction-line" aria-hidden="true" />
-          {instruction}
+          Click the envelope to open
           <span className="instruction-line" aria-hidden="true" />
         </p>
       </header>
@@ -118,7 +113,7 @@ export default function Home() {
         <div className="invitation-card" onAnimationEnd={finishExtraction}>
           <img
             className="invitation-preview"
-            src="/invitation-preview.png"
+            src="/invitation-preview-svg.png"
             alt=""
             aria-hidden="true"
           />
@@ -158,9 +153,13 @@ export default function Home() {
         </button>
 
         {phase === "revealed" && (
-          <button className="replay-button" type="button" onClick={replayInvitation}>
+          <button
+            className="replay-button"
+            type="button"
+            onClick={replayInvitation}
+            aria-label="Replay invitation"
+          >
             <span aria-hidden="true">↻</span>
-            Replay
           </button>
         )}
       </section>
