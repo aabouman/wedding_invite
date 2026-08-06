@@ -34,7 +34,7 @@ test("renders the finished wedding invitation shell", async () => {
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|Starter Project/i);
 });
 
-test("starts the SVG only after the extraction completes", async () => {
+test("starts the lightweight invitation only after extraction completes", async () => {
   const [page, css, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
@@ -43,20 +43,29 @@ test("starts the SVG only after the extraction completes", async () => {
 
   assert.match(page, /event\.animationName !== "extractInvitation"/);
   assert.match(page, /phase === "revealed" && \(/);
-  assert.match(page, /data=\{`invitation\.svg\?animation=\$\{animationRun\}`\}/);
+  assert.match(
+    page,
+    /data=\{`invitation-choose\.svg\?animation=\$\{animationRun\}`\}/,
+  );
+  assert.match(page, /src="invitation-poster\.webp"/);
+  assert.match(page, /src="invitation-base\.webp"/);
+  assert.match(page, /HYBRID_RASTER_ASSET_COUNT = 7/);
   assert.match(page, /href="https:\/\/forms\.gle\/ouv3ACJxg21uFDa9A"/);
   assert.match(page, /Fill out this form!/);
   assert.match(page, /phase === "revealed" && formReady && \(/);
   assert.match(page, /#mask-choose-letter-5 animate:last-of-type/);
   assert.match(page, /4425/);
   assert.match(css, /animation:\s*extractInvitation 2\.55s/);
+  assert.match(css, /animation:\s*waveFlag 4\.8s/);
+  assert.match(css, /animation:\s*swayCouple 2\.4s 1\.2s/);
   assert.match(css, /\.form-button\s*\{[\s\S]*?position:\s*fixed/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
-  const animatedSvg = await readFile(
-    new URL("../public/invitation.svg", import.meta.url),
+  const animatedChooseOverlay = await readFile(
+    new URL("../public/invitation-choose.svg", import.meta.url),
     "utf8",
   );
-  assert.match(animatedSvg, /<animate(?:Transform)?\b/);
+  assert.match(animatedChooseOverlay, /<animate\b/);
+  assert.match(animatedChooseOverlay, /id="choose-overlay"/);
 });

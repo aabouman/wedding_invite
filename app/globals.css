@@ -313,7 +313,9 @@ a:focus-visible {
 }
 
 .invitation-preview,
-.invitation-svg {
+.invitation-scene,
+.invitation-base,
+.invitation-choose {
   position: absolute;
   inset: 0;
   display: block;
@@ -328,15 +330,99 @@ a:focus-visible {
   z-index: 1;
 }
 
-.invitation-svg {
+.invitation-scene {
   z-index: 2;
-  background: #faf6ec;
   opacity: 0;
   transition: none;
 }
 
-.invitation-svg.is-ready {
+.invitation-scene.is-ready {
   opacity: 1;
+}
+
+.invitation-base {
+  z-index: 1;
+}
+
+.invitation-motion {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.invitation-flag {
+  top: 41%;
+  left: 50%;
+  width: 4.75%;
+  height: 4.2%;
+  transform-origin: 22.81% -22.22%;
+}
+
+.invitation-lantern-left {
+  top: 35.8%;
+  left: 3.333%;
+  width: 16.583%;
+  height: 23.067%;
+  transform-origin: 49.75% 0.29%;
+}
+
+.invitation-lantern-right {
+  top: 35.8%;
+  left: 82.167%;
+  width: 16.417%;
+  height: 23.067%;
+  transform-origin: 38.58% 0.29%;
+}
+
+.invitation-sophie {
+  top: 52.267%;
+  left: 21%;
+  width: 36.167%;
+  height: 31.533%;
+  transform-origin: 45.62% 94.71%;
+}
+
+.invitation-alex {
+  top: 51.533%;
+  left: 54.917%;
+  width: 24.167%;
+  height: 32.6%;
+  transform-origin: 46.9% 95.91%;
+}
+
+.invitation-hands {
+  top: 63.8%;
+  left: 42.917%;
+  width: 18.417%;
+  height: 5.867%;
+}
+
+.invitation-choose {
+  z-index: 3;
+}
+
+.invitation-scene.is-running .invitation-flag {
+  animation: waveFlag 4.8s linear infinite;
+}
+
+.invitation-scene.is-running .invitation-lantern-left {
+  animation: swayLanternLeft 5.6s ease-in-out infinite;
+}
+
+.invitation-scene.is-running .invitation-lantern-right {
+  animation: swayLanternRight 6.4s ease-in-out infinite;
+}
+
+.invitation-scene.is-running .invitation-sophie,
+.invitation-scene.is-running .invitation-alex {
+  animation: swayCouple 2.4s 1.2s ease-in-out infinite;
+}
+
+.invitation-scene.is-running .invitation-hands {
+  animation: holdHands 2.4s 1.2s ease-in-out infinite;
 }
 
 .phase-opening .invitation-card {
@@ -568,6 +654,78 @@ a:focus-visible {
   to {
     opacity: 1;
     transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes waveFlag {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  28% {
+    transform: rotate(3.8deg);
+  }
+  55% {
+    transform: rotate(-2.8deg);
+  }
+  80% {
+    transform: rotate(2.6deg);
+  }
+}
+
+@keyframes swayLanternLeft {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2.4deg);
+  }
+  75% {
+    transform: rotate(-2.4deg);
+  }
+}
+
+@keyframes swayLanternRight {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-2.2deg);
+  }
+  75% {
+    transform: rotate(2.2deg);
+  }
+}
+
+@keyframes swayCouple {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1.5deg);
+  }
+  75% {
+    transform: rotate(-1.5deg);
+  }
+}
+
+@keyframes holdHands {
+  0%,
+  50%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2.26%, -0.91%);
+  }
+  75% {
+    transform: translate(-2.26%, -0.91%);
   }
 }
 

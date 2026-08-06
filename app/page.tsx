@@ -11,14 +11,20 @@ type AnimatedSvgRoot = SVGSVGElement & {
   unpauseAnimations?: () => void;
 };
 
+const HYBRID_RASTER_ASSET_COUNT = 7;
+
 export default function Home() {
   const [phase, setPhase] = useState<Phase>("sealed");
   const [animationRun, setAnimationRun] = useState(0);
-  const [svgReady, setSvgReady] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
+  const [sceneRunning, setSceneRunning] = useState(false);
+  const [chooseReady, setChooseReady] = useState(false);
+  const [rasterAssetsLoaded, setRasterAssetsLoaded] = useState(0);
   const [formReady, setFormReady] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const invitationObject = useRef<HTMLObjectElement>(null);
   const formRevealTimer = useRef<number | null>(null);
+  const sceneStarted = useRef(false);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -40,7 +46,11 @@ export default function Home() {
       formRevealTimer.current = null;
     }
 
-    setSvgReady(false);
+    sceneStarted.current = false;
+    setSceneReady(false);
+    setSceneRunning(false);
+    setChooseReady(false);
+    setRasterAssetsLoaded(0);
     setFormReady(false);
     setAnimationRun((run) => run + 1);
     setPhase("revealed");
@@ -70,7 +80,32 @@ export default function Home() {
     showInvitation();
   };
 
-  const handleSvgLoad = () => {
+  const handleRasterLoad = () => {
+    setRasterAssetsLoaded((count) =>
+      Math.min(count + 1, HYBRID_RASTER_ASSET_COUNT),
+    );
+  };
+
+  const handleChooseLoad = () => {
+    const document = invitationObject.current?.contentDocument;
+    const root = document?.documentElement as AnimatedSvgRoot | undefined;
+
+    root?.pauseAnimations?.();
+    root?.setCurrentTime?.(0);
+    setChooseReady(true);
+  };
+
+  useEffect(() => {
+    if (
+      phase !== "revealed" ||
+      !chooseReady ||
+      rasterAssetsLoaded < HYBRID_RASTER_ASSET_COUNT ||
+      sceneStarted.current
+    ) {
+      return;
+    }
+
+    sceneStarted.current = true;
     const document = invitationObject.current?.contentDocument;
     const root = document?.documentElement as AnimatedSvgRoot | undefined;
 
@@ -79,17 +114,24 @@ export default function Home() {
       formRevealTimer.current = null;
     }
 
+    const animationFrames: number[] = [];
+
     if (reduceMotion) {
       root?.pauseAnimations?.();
       root?.setCurrentTime?.(30);
-      setSvgReady(true);
-      setFormReady(true);
-      return;
+      animationFrames.push(
+        window.requestAnimationFrame(() => {
+          setSceneReady(true);
+          setFormReady(true);
+        }),
+      );
+      return () => {
+        animationFrames.forEach((frame) => window.cancelAnimationFrame(frame));
+      };
     }
 
     root?.pauseAnimations?.();
     root?.setCurrentTime?.(0);
-    setSvgReady(true);
 
     const finishChooseAnimation = () => {
       if (formRevealTimer.current !== null) {
@@ -107,8 +149,10 @@ export default function Home() {
       once: true,
     });
 
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
+    const firstFrame = window.requestAnimationFrame(() => {
+      setSceneReady(true);
+      const secondFrame = window.requestAnimationFrame(() => {
+        setSceneRunning(true);
         root?.unpauseAnimations?.();
 
         // Fallback for browsers that do not dispatch SVG SMIL endEvent.
@@ -117,8 +161,19 @@ export default function Home() {
           4425,
         );
       });
+
+      animationFrames.push(secondFrame);
     });
-  };
+
+    animationFrames.push(firstFrame);
+    return () => {
+      animationFrames.forEach((frame) => window.cancelAnimationFrame(frame));
+      finalChooseStroke?.removeEventListener(
+        "endEvent",
+        finishChooseAnimation,
+      );
+    };
+  }, [chooseReady, phase, rasterAssetsLoaded, reduceMotion]);
 
   const replayInvitation = () => {
     if (formRevealTimer.current !== null) {
@@ -126,7 +181,11 @@ export default function Home() {
       formRevealTimer.current = null;
     }
 
-    setSvgReady(false);
+    sceneStarted.current = false;
+    setSceneReady(false);
+    setSceneRunning(false);
+    setChooseReady(false);
+    setRasterAssetsLoaded(0);
     setFormReady(false);
     setPhase("sealed");
 
@@ -162,23 +221,78 @@ export default function Home() {
         <div className="invitation-card" onAnimationEnd={finishExtraction}>
           <img
             className="invitation-preview"
-            src="invitation-preview-svg.png"
+            src="invitation-poster.webp"
             alt=""
             aria-hidden="true"
           />
 
           {phase === "revealed" && (
-            <object
-              key={animationRun}
-              ref={invitationObject}
-              className={`invitation-svg ${svgReady ? "is-ready" : ""}`}
-              data={`invitation.svg?animation=${animationRun}`}
-              type="image/svg+xml"
+            <div
+              className={`invitation-scene ${sceneReady ? "is-ready" : ""} ${sceneRunning ? "is-running" : ""}`}
+              role="img"
               aria-label="Sophie and Alex save-the-date wedding invitation"
-              onLoad={handleSvgLoad}
             >
-              Sophie and Alex save-the-date invitation
-            </object>
+              <img
+                className="invitation-base"
+                src="invitation-base.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <img
+                className="invitation-motion invitation-flag"
+                src="invitation-layer-flag.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <img
+                className="invitation-motion invitation-lantern-left"
+                src="invitation-layer-lantern-left.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <img
+                className="invitation-motion invitation-lantern-right"
+                src="invitation-layer-lantern-right.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <img
+                className="invitation-motion invitation-sophie"
+                src="invitation-layer-sophie.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <img
+                className="invitation-motion invitation-alex"
+                src="invitation-layer-alex.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <img
+                className="invitation-motion invitation-hands"
+                src="invitation-layer-hands.webp"
+                alt=""
+                aria-hidden="true"
+                onLoad={handleRasterLoad}
+              />
+              <object
+                key={animationRun}
+                ref={invitationObject}
+                className="invitation-choose"
+                data={`invitation-choose.svg?animation=${animationRun}`}
+                type="image/svg+xml"
+                aria-hidden="true"
+                onLoad={handleChooseLoad}
+              >
+                Sophie and Alex save-the-date invitation
+              </object>
+            </div>
           )}
         </div>
 
