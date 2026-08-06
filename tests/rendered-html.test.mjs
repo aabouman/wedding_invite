@@ -45,7 +45,7 @@ test("starts the lightweight invitation only after extraction completes", async 
   assert.match(page, /phase === "revealed" && \(/);
   assert.match(
     page,
-    /data=\{`invitation-choose\.svg\?animation=\$\{animationRun\}`\}/,
+    /data=\{`invitation-choose\.svg\?v=2&animation=\$\{animationRun\}`\}/,
   );
   assert.match(page, /src="invitation-poster\.webp"/);
   assert.match(page, /src="invitation-base\.webp"/);
@@ -68,4 +68,9 @@ test("starts the lightweight invitation only after extraction completes", async 
   );
   assert.match(animatedChooseOverlay, /<animate\b/);
   assert.match(animatedChooseOverlay, /id="choose-overlay"/);
+  assert.match(animatedChooseOverlay, /stroke-opacity="0"/);
+  assert.match(
+    animatedChooseOverlay,
+    /<set attributeName="stroke-opacity" to="1" begin="[\d.]+s" fill="freeze"/,
+  );
 });

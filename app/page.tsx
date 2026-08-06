@@ -285,7 +285,7 @@ export default function Home() {
                 key={animationRun}
                 ref={invitationObject}
                 className="invitation-choose"
-                data={`invitation-choose.svg?animation=${animationRun}`}
+                data={`invitation-choose.svg?v=2&animation=${animationRun}`}
                 type="image/svg+xml"
                 aria-hidden="true"
                 onLoad={handleChooseLoad}

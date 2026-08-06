@@ -74,6 +74,34 @@ def remove_animations(root: ET.Element) -> None:
             parents[element].remove(element)
 
 
+def hide_mask_strokes_until_draw(root: ET.Element) -> None:
+    """Prevent Safari from painting round dash caps before SMIL begins."""
+    for path in root.iter(f"{NS}path"):
+        dash_animation = next(
+            (
+                child
+                for child in path
+                if child.tag == f"{NS}animate"
+                and child.get("attributeName") == "stroke-dashoffset"
+            ),
+            None,
+        )
+        if dash_animation is None:
+            continue
+
+        path.set("stroke-opacity", "0")
+        reveal_stroke = ET.Element(
+            f"{NS}set",
+            {
+                "attributeName": "stroke-opacity",
+                "to": "1",
+                "begin": dash_animation.get("begin", "0s"),
+                "fill": "freeze",
+            },
+        )
+        path.insert(list(path).index(dash_animation), reveal_stroke)
+
+
 def svg_bytes(root: ET.Element) -> bytes:
     return ET.tostring(root, encoding="utf-8", xml_declaration=True)
 
@@ -138,6 +166,7 @@ def build_choose_overlay() -> None:
     if defs is not None:
         overlay_root.append(deepcopy(defs))
     overlay_root.append(deepcopy(find_by_id(SOURCE_ROOT, "choose-overlay")))
+    hide_mask_strokes_until_draw(overlay_root)
     (OUTPUT / "invitation-choose.svg").write_bytes(svg_bytes(overlay_root))
 
 

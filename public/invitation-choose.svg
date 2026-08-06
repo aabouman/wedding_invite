@@ -19,59 +19,59 @@
     </filter>
     <filter id="soften" x="-2%" y="-2%" width="104%" height="104%"><feGaussianBlur stdDeviation="0.45" /></filter>
       <mask id="mask-choose-strike" maskUnits="userSpaceOnUse" x="220" y="217" width="234" height="177">
-      <path d="M443.0,228.0 L394.0,249.0 L336.0,286.0 L305.0,309.0 L266.0,344.0 L235.0,375.0 L229.0,384.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="1.0s" dur="0.8s" fill="freeze" />
+      <path d="M443.0,228.0 L394.0,249.0 L336.0,286.0 L305.0,309.0 L266.0,344.0 L235.0,375.0 L229.0,384.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="1.0s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="1.0s" dur="0.8s" fill="freeze" />
       </path>
     </mask>
     <mask id="mask-choose-letter-0" maskUnits="userSpaceOnUse" x="137" y="268" width="62" height="64">
-      <path d="M153.0,276.0 L148.0,284.0 L149.0,297.0 L155.0,306.0 L167.0,317.0 L173.0,320.0 L182.0,319.0 L186.0,314.0 L188.0,300.0" fill="none" stroke="#fff" stroke-width="14.3" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.1s" dur="0.34s" fill="freeze" />
+      <path d="M153.0,276.0 L148.0,284.0 L149.0,297.0 L155.0,306.0 L167.0,317.0 L173.0,320.0 L182.0,319.0 L186.0,314.0 L188.0,300.0" fill="none" stroke="#fff" stroke-width="14.3" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.1s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.1s" dur="0.34s" fill="freeze" />
       </path>
     </mask>
     <mask id="mask-choose-letter-1" maskUnits="userSpaceOnUse" x="164" y="227" width="75" height="79">
-      <path d="M197.0,237.0 L206.0,248.0 L206.0,251.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.48s" dur="0.048s" fill="freeze" />
+      <path d="M197.0,237.0 L206.0,248.0 L206.0,251.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.48s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.48s" dur="0.048s" fill="freeze" />
       </path>
-      <path d="M205.0,252.0 L191.0,273.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.53s" dur="0.07s" fill="freeze" />
+      <path d="M205.0,252.0 L191.0,273.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.53s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.53s" dur="0.07s" fill="freeze" />
       </path>
-      <path d="M207.0,252.0 L228.0,274.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.6s" dur="0.084s" fill="freeze" />
+      <path d="M207.0,252.0 L228.0,274.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.6s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.6s" dur="0.084s" fill="freeze" />
       </path>
-      <path d="M173.0,258.0 L190.0,273.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.68s" dur="0.063s" fill="freeze" />
+      <path d="M173.0,258.0 L190.0,273.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.68s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.68s" dur="0.063s" fill="freeze" />
       </path>
-      <path d="M191.0,274.0 L210.0,294.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.74s" dur="0.076s" fill="freeze" />
+      <path d="M191.0,274.0 L210.0,294.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.74s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.74s" dur="0.076s" fill="freeze" />
       </path>
     </mask>
     <mask id="mask-choose-letter-2" maskUnits="userSpaceOnUse" x="210" y="204" width="56" height="66">
-      <path d="M227.0,213.0 L240.0,220.0 L251.0,234.0 L253.0,249.0 L247.0,259.0 L239.0,258.0 L229.0,248.0 L223.0,237.0 L221.0,225.0 L223.0,216.0 L227.0,213.0" fill="none" stroke="#fff" stroke-width="16.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.86s" dur="0.34s" fill="freeze" />
+      <path d="M227.0,213.0 L240.0,220.0 L251.0,234.0 L253.0,249.0 L247.0,259.0 L239.0,258.0 L229.0,248.0 L223.0,237.0 L221.0,225.0 L223.0,216.0 L227.0,213.0" fill="none" stroke="#fff" stroke-width="16.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="2.86s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="2.86s" dur="0.34s" fill="freeze" />
       </path>
     </mask>
     <mask id="mask-choose-letter-3" maskUnits="userSpaceOnUse" x="244" y="182" width="57" height="69">
-      <path d="M259.0,193.0 L264.0,193.0 L272.0,198.0 L283.0,209.0 L288.0,218.0 L289.0,225.0 L287.0,233.0 L280.0,240.0 L274.0,239.0 L259.0,221.0 L256.0,212.0 L256.0,197.0 L259.0,193.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="3.24s" dur="0.34s" fill="freeze" />
+      <path d="M259.0,193.0 L264.0,193.0 L272.0,198.0 L283.0,209.0 L288.0,218.0 L289.0,225.0 L287.0,233.0 L280.0,240.0 L274.0,239.0 L259.0,221.0 L256.0,212.0 L256.0,197.0 L259.0,193.0" fill="none" stroke="#fff" stroke-width="15.2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="3.24s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="3.24s" dur="0.34s" fill="freeze" />
       </path>
     </mask>
     <mask id="mask-choose-letter-4" maskUnits="userSpaceOnUse" x="278" y="166" width="52" height="64">
-      <path d="M301.0,174.0 L296.0,174.0 L292.0,178.0 L290.0,186.0 L295.0,190.0 L309.0,195.0 L317.0,207.0 L316.0,216.0 L313.0,219.0 L305.0,220.0" fill="none" stroke="#fff" stroke-width="13.7" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="3.62s" dur="0.34s" fill="freeze" />
+      <path d="M301.0,174.0 L296.0,174.0 L292.0,178.0 L290.0,186.0 L295.0,190.0 L309.0,195.0 L317.0,207.0 L316.0,216.0 L313.0,219.0 L305.0,220.0" fill="none" stroke="#fff" stroke-width="13.7" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="3.62s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="3.62s" dur="0.34s" fill="freeze" />
       </path>
     </mask>
     <mask id="mask-choose-letter-5" maskUnits="userSpaceOnUse" x="307" y="145" width="62" height="74">
-      <path d="M338.0,154.0 L331.0,155.0 L318.0,164.0 L320.0,173.0 L324.0,179.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.0s" dur="0.116s" fill="freeze" />
+      <path d="M338.0,154.0 L331.0,155.0 L318.0,164.0 L320.0,173.0 L324.0,179.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="4.0s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.0s" dur="0.116s" fill="freeze" />
       </path>
-      <path d="M347.0,172.0 L325.0,179.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.12s" dur="0.068s" fill="freeze" />
+      <path d="M347.0,172.0 L325.0,179.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="4.12s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.12s" dur="0.068s" fill="freeze" />
       </path>
-      <path d="M325.0,180.0 L327.0,190.0 L336.0,206.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.18s" dur="0.084s" fill="freeze" />
+      <path d="M325.0,180.0 L327.0,190.0 L336.0,206.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="4.18s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.18s" dur="0.084s" fill="freeze" />
       </path>
-      <path d="M360.0,200.0 L345.0,203.0 L337.0,207.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-        <animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.27s" dur="0.072s" fill="freeze" />
+      <path d="M360.0,200.0 L345.0,203.0 L337.0,207.0" fill="none" stroke="#fff" stroke-width="12.0" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke-opacity="0">
+        <set attributeName="stroke-opacity" to="1" begin="4.27s" fill="freeze" /><animate attributeName="stroke-dashoffset" from="1" to="0" begin="4.27s" dur="0.072s" fill="freeze" />
       </path>
     </mask>
       <filter id="paper-grain" x="0%" y="0%" width="100%" height="100%">
