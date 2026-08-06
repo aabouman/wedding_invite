@@ -43,7 +43,7 @@ test("starts the SVG only after the extraction completes", async () => {
 
   assert.match(page, /event\.animationName !== "extractInvitation"/);
   assert.match(page, /phase === "revealed" && \(/);
-  assert.match(page, /data=\{`\/invitation\.svg\?animation=\$\{animationRun\}`\}/);
+  assert.match(page, /data=\{`invitation\.svg\?animation=\$\{animationRun\}`\}/);
   assert.match(page, /href="https:\/\/forms\.gle\/ouv3ACJxg21uFDa9A"/);
   assert.match(page, /Fill out this form!/);
   assert.match(page, /phase === "revealed" && formReady && \(/);

@@ -162,7 +162,7 @@ export default function Home() {
         <div className="invitation-card" onAnimationEnd={finishExtraction}>
           <img
             className="invitation-preview"
-            src="/invitation-preview-svg.png"
+            src="invitation-preview-svg.png"
             alt=""
             aria-hidden="true"
           />
@@ -172,7 +172,7 @@ export default function Home() {
               key={animationRun}
               ref={invitationObject}
               className={`invitation-svg ${svgReady ? "is-ready" : ""}`}
-              data={`/invitation.svg?animation=${animationRun}`}
+              data={`invitation.svg?animation=${animationRun}`}
               type="image/svg+xml"
               aria-label="Sophie and Alex save-the-date wedding invitation"
               onLoad={handleSvgLoad}
