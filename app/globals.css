@@ -41,7 +41,7 @@ button:focus-visible {
 .wedding-page {
   position: relative;
   min-height: 100svh;
-  overflow: hidden;
+  overflow: clip;
   isolation: isolate;
   background:
     radial-gradient(circle at 50% 58%, rgba(255, 255, 255, 0.93) 0 19%, transparent 48%),
@@ -86,95 +86,6 @@ button:focus-visible {
   transform: rotate(-22deg);
 }
 
-.thread {
-  position: absolute;
-  z-index: 0;
-  width: min(19vw, 260px);
-  height: min(24vw, 290px);
-  border-color: rgba(168, 63, 56, 0.5);
-  pointer-events: none;
-}
-
-.thread::before,
-.thread::after,
-.thread span::before,
-.thread span::after {
-  position: absolute;
-  width: 14px;
-  height: 34px;
-  border: 2px solid rgba(168, 63, 56, 0.55);
-  border-radius: 90% 10% 82% 18%;
-  content: "";
-}
-
-.thread-left {
-  top: -21px;
-  left: -19px;
-  border-top: 2px solid rgba(168, 63, 56, 0.52);
-  border-left: 2px solid rgba(168, 63, 56, 0.52);
-  border-radius: 32px 0 0;
-}
-
-.thread-right {
-  right: -19px;
-  bottom: -21px;
-  border-right: 2px solid rgba(168, 63, 56, 0.52);
-  border-bottom: 2px solid rgba(168, 63, 56, 0.52);
-  border-radius: 0 0 32px;
-}
-
-.thread-left::before {
-  top: 10px;
-  left: 8px;
-  transform: rotate(-39deg);
-}
-
-.thread-left::after {
-  top: 0;
-  left: 30px;
-  transform: rotate(38deg);
-}
-
-.thread-left span::before {
-  top: 28px;
-  left: 25px;
-  transform: rotate(85deg);
-}
-
-.thread-left span::after {
-  top: 7px;
-  left: 52px;
-  width: 11px;
-  height: 27px;
-  transform: rotate(71deg);
-}
-
-.thread-right::before {
-  right: 8px;
-  bottom: 10px;
-  transform: rotate(141deg);
-}
-
-.thread-right::after {
-  right: 30px;
-  bottom: 0;
-  transform: rotate(218deg);
-}
-
-.thread-right span::before {
-  right: 25px;
-  bottom: 28px;
-  transform: rotate(265deg);
-}
-
-.thread-right span::after {
-  right: 52px;
-  bottom: 7px;
-  width: 11px;
-  height: 27px;
-  transform: rotate(251deg);
-}
-
 .welcome-copy {
   position: absolute;
   top: clamp(34px, 8svh, 82px);
@@ -186,33 +97,12 @@ button:focus-visible {
   transition: opacity 550ms ease, transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--red);
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(0.65rem, 1.1vw, 0.76rem);
-  font-weight: 650;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.welcome-copy h1 {
-  margin: 0;
-  color: #3e3630;
-  font-size: clamp(2.3rem, 5.6vw, 4.9rem);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.96;
-  text-wrap: balance;
-}
-
 .instruction {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 13px;
-  margin: 19px 0 0;
+  margin: 0;
   color: var(--muted-ink);
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.79rem;
@@ -238,7 +128,7 @@ button:focus-visible {
   position: relative;
   width: 100%;
   min-height: 100svh;
-  overflow: hidden;
+  overflow: clip;
   perspective: 1500px;
 }
 
@@ -406,7 +296,8 @@ button:focus-visible {
   box-shadow:
     0 22px 60px rgba(86, 58, 40, 0.2),
     0 3px 10px rgba(86, 58, 40, 0.11);
-  transform: translateX(-50%) translateY(14%) scale(0.66);
+  opacity: 0;
+  transform: translateX(-50%) translateY(0) scale(0.44);
   transform-origin: 50% 100%;
   will-change: transform;
 }
@@ -440,7 +331,7 @@ button:focus-visible {
   z-index: 2;
   background: #faf6ec;
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition: none;
 }
 
 .invitation-svg.is-ready {
@@ -453,7 +344,8 @@ button:focus-visible {
 
 .phase-revealed .invitation-card {
   z-index: 8;
-  transform: translateX(-50%) translateY(-6%) scale(1);
+  opacity: 1;
+  transform: translateX(-50%) translateY(calc(-46.2svh + 50%)) scale(1);
   box-shadow:
     0 30px 80px rgba(85, 55, 34, 0.22),
     0 5px 16px rgba(85, 55, 34, 0.11);
@@ -484,10 +376,11 @@ button:focus-visible {
   right: clamp(18px, 4vw, 52px);
   bottom: clamp(18px, 4svh, 38px);
   z-index: 14;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 10px 15px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
   border: 1px solid rgba(78, 60, 47, 0.2);
   border-radius: 999px;
   background: rgba(250, 246, 238, 0.82);
@@ -495,15 +388,13 @@ button:focus-visible {
   box-shadow: 0 8px 24px rgba(81, 56, 38, 0.1);
   cursor: pointer;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.74rem;
-  font-weight: 650;
-  letter-spacing: 0.05em;
   backdrop-filter: blur(8px);
   animation: showReplay 500ms 450ms ease both;
 }
 
 .replay-button span {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  line-height: 1;
 }
 
 .replay-button:hover {
@@ -525,17 +416,25 @@ button:focus-visible {
 
 @keyframes extractInvitation {
   0%,
-  24% {
-    transform: translateX(-50%) translateY(14%) scale(0.66);
+  23% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0) scale(0.44);
+  }
+  32% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.52);
   }
   67% {
+    opacity: 1;
     transform: translateX(-50%) translateY(-40%) scale(0.76);
   }
   84% {
-    transform: translateX(-50%) translateY(-8.5%) scale(1.025);
+    opacity: 1;
+    transform: translateX(-50%) translateY(calc(-48svh + 50%)) scale(1.025);
   }
   100% {
-    transform: translateX(-50%) translateY(-6%) scale(1);
+    opacity: 1;
+    transform: translateX(-50%) translateY(calc(-46.2svh + 50%)) scale(1);
   }
 }
 
@@ -589,12 +488,7 @@ button:focus-visible {
     top: clamp(28px, 6svh, 52px);
   }
 
-  .welcome-copy h1 {
-    font-size: clamp(2.15rem, 11vw, 3.15rem);
-  }
-
   .instruction {
-    margin-top: 14px;
     font-size: 0.7rem;
   }
 
@@ -626,17 +520,6 @@ button:focus-visible {
     top: 22px;
   }
 
-  .eyebrow {
-    margin-bottom: 6px;
-  }
-
-  .welcome-copy h1 {
-    font-size: 2.75rem;
-  }
-
-  .instruction {
-    margin-top: 10px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
