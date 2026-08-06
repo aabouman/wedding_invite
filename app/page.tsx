@@ -15,8 +15,10 @@ export default function Home() {
   const [phase, setPhase] = useState<Phase>("sealed");
   const [animationRun, setAnimationRun] = useState(0);
   const [svgReady, setSvgReady] = useState(false);
+  const [formReady, setFormReady] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const invitationObject = useRef<HTMLObjectElement>(null);
+  const formRevealTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -24,11 +26,22 @@ export default function Home() {
 
     updatePreference();
     preference.addEventListener("change", updatePreference);
-    return () => preference.removeEventListener("change", updatePreference);
+    return () => {
+      preference.removeEventListener("change", updatePreference);
+      if (formRevealTimer.current !== null) {
+        window.clearTimeout(formRevealTimer.current);
+      }
+    };
   }, []);
 
   const showInvitation = () => {
+    if (formRevealTimer.current !== null) {
+      window.clearTimeout(formRevealTimer.current);
+      formRevealTimer.current = null;
+    }
+
     setSvgReady(false);
+    setFormReady(false);
     setAnimationRun((run) => run + 1);
     setPhase("revealed");
   };
@@ -58,13 +71,19 @@ export default function Home() {
   };
 
   const handleSvgLoad = () => {
-    const root = invitationObject.current?.contentDocument
-      ?.documentElement as AnimatedSvgRoot | undefined;
+    const document = invitationObject.current?.contentDocument;
+    const root = document?.documentElement as AnimatedSvgRoot | undefined;
+
+    if (formRevealTimer.current !== null) {
+      window.clearTimeout(formRevealTimer.current);
+      formRevealTimer.current = null;
+    }
 
     if (reduceMotion) {
       root?.pauseAnimations?.();
       root?.setCurrentTime?.(30);
       setSvgReady(true);
+      setFormReady(true);
       return;
     }
 
@@ -72,13 +91,43 @@ export default function Home() {
     root?.setCurrentTime?.(0);
     setSvgReady(true);
 
+    const finishChooseAnimation = () => {
+      if (formRevealTimer.current !== null) {
+        window.clearTimeout(formRevealTimer.current);
+        formRevealTimer.current = null;
+      }
+      setFormReady(true);
+    };
+
+    // This is the last stroke in the hand-drawn “Choose” sequence.
+    const finalChooseStroke = document?.querySelector(
+      "#mask-choose-letter-5 animate:last-of-type",
+    );
+    finalChooseStroke?.addEventListener("endEvent", finishChooseAnimation, {
+      once: true,
+    });
+
     window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => root?.unpauseAnimations?.());
+      window.requestAnimationFrame(() => {
+        root?.unpauseAnimations?.();
+
+        // Fallback for browsers that do not dispatch SVG SMIL endEvent.
+        formRevealTimer.current = window.setTimeout(
+          finishChooseAnimation,
+          4425,
+        );
+      });
     });
   };
 
   const replayInvitation = () => {
+    if (formRevealTimer.current !== null) {
+      window.clearTimeout(formRevealTimer.current);
+      formRevealTimer.current = null;
+    }
+
     setSvgReady(false);
+    setFormReady(false);
     setPhase("sealed");
 
     window.setTimeout(() => {
@@ -163,14 +212,17 @@ export default function Home() {
           </button>
         )}
 
-        {phase === "revealed" && (
+        {phase === "revealed" && formReady && (
           <a
             className="form-button"
             href="https://forms.gle/ouv3ACJxg21uFDa9A"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Fill out this form!
+            <span className="form-button-label">Fill out this form!</span>
+            <span className="form-button-arrow" aria-hidden="true">
+              ↗
+            </span>
           </a>
         )}
       </section>

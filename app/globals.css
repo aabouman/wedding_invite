@@ -288,7 +288,7 @@ a:focus-visible {
   bottom: 3.8%;
   left: 50%;
   z-index: 3;
-  width: min(88vw, calc((100svh - 56px) * 0.8), 600px);
+  width: min(88vw, calc((100svh - 140px) * 0.8), 600px);
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid rgba(115, 90, 68, 0.18);
@@ -374,8 +374,8 @@ a:focus-visible {
 
 .replay-button {
   position: absolute;
+  top: clamp(18px, 4svh, 38px);
   right: clamp(18px, 4vw, 52px);
-  bottom: clamp(18px, 4svh, 38px);
   z-index: 14;
   display: grid;
   width: 44px;
@@ -404,34 +404,79 @@ a:focus-visible {
 }
 
 .form-button {
-  position: absolute;
-  bottom: clamp(18px, 4svh, 38px);
+  position: fixed;
+  bottom: max(18px, calc(env(safe-area-inset-bottom) + 12px));
   left: 50%;
-  z-index: 14;
+  z-index: 20;
   display: inline-flex;
-  min-height: 44px;
-  padding: 11px 22px;
+  width: min(86vw, 320px);
+  min-height: 58px;
+  padding: 7px 7px 7px 25px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(105, 27, 27, 0.3);
+  gap: 17px;
+  overflow: hidden;
+  border: 1px solid rgba(105, 27, 27, 0.44);
   border-radius: 999px;
-  background: linear-gradient(145deg, #b84c44, #92322f);
-  color: #fffaf1;
-  box-shadow: 0 10px 28px rgba(104, 43, 35, 0.24);
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.85rem;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 226, 207, 0.3), transparent 38%),
+    linear-gradient(145deg, #b94d45, #8b2d2c 72%);
+  color: #fff9ef;
+  box-shadow:
+    0 15px 36px rgba(88, 35, 31, 0.3),
+    inset 0 1px rgba(255, 255, 255, 0.28),
+    inset 0 -1px rgba(73, 18, 19, 0.2);
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 1rem;
   font-weight: 600;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.018em;
   text-decoration: none;
   transform: translateX(-50%);
-  transition: filter 180ms ease, transform 180ms ease, box-shadow 180ms ease;
-  animation: showFormButton 500ms 650ms ease both;
+  transition: filter 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  animation: showFormButton 650ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.form-button::before {
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(255, 235, 214, 0.28);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.form-button-label,
+.form-button-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.form-button-arrow {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: 1px solid rgba(255, 244, 229, 0.42);
+  border-radius: 50%;
+  background: rgba(255, 248, 235, 0.14);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: background 200ms ease, transform 200ms ease;
 }
 
 .form-button:hover {
-  filter: brightness(1.07) saturate(1.05);
-  box-shadow: 0 12px 32px rgba(104, 43, 35, 0.31);
-  transform: translateX(-50%) translateY(-2px);
+  filter: brightness(1.06) saturate(1.04);
+  box-shadow:
+    0 18px 42px rgba(88, 35, 31, 0.37),
+    inset 0 1px rgba(255, 255, 255, 0.3);
+  transform: translateX(-50%) translateY(-3px);
+}
+
+.form-button:hover .form-button-arrow {
+  background: rgba(255, 248, 235, 0.23);
+  transform: rotate(6deg) scale(1.04);
 }
 
 .screen-reader-status {
@@ -518,11 +563,11 @@ a:focus-visible {
 @keyframes showFormButton {
   from {
     opacity: 0;
-    transform: translate(-50%, 8px);
+    transform: translate(-50%, 16px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0) scale(1);
   }
 }
 
@@ -540,14 +585,21 @@ a:focus-visible {
   }
 
   .replay-button {
+    top: 14px;
     right: 14px;
-    bottom: 13px;
   }
 
   .form-button {
-    bottom: 13px;
-    padding-inline: 18px;
-    font-size: 0.78rem;
+    width: min(84vw, 300px);
+    min-height: 54px;
+    padding-left: 22px;
+    font-size: 0.92rem;
+  }
+
+  .form-button-arrow {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
   }
 }
 

@@ -46,11 +46,11 @@ test("starts the SVG only after the extraction completes", async () => {
   assert.match(page, /data=\{`\/invitation\.svg\?animation=\$\{animationRun\}`\}/);
   assert.match(page, /href="https:\/\/forms\.gle\/ouv3ACJxg21uFDa9A"/);
   assert.match(page, /Fill out this form!/);
-  assert.match(
-    page,
-    /phase === "revealed" && \(\s*<a\s+className="form-button"/,
-  );
+  assert.match(page, /phase === "revealed" && formReady && \(/);
+  assert.match(page, /#mask-choose-letter-5 animate:last-of-type/);
+  assert.match(page, /4425/);
   assert.match(css, /animation:\s*extractInvitation 2\.55s/);
+  assert.match(css, /\.form-button\s*\{[\s\S]*?position:\s*fixed/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
