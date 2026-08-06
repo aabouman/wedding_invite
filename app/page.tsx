@@ -162,6 +162,17 @@ export default function Home() {
             <span aria-hidden="true">↻</span>
           </button>
         )}
+
+        {phase === "revealed" && (
+          <a
+            className="form-button"
+            href="https://forms.gle/ouv3ACJxg21uFDa9A"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Fill out this form!
+          </a>
+        )}
       </section>
 
       <p className="screen-reader-status" aria-live="polite">

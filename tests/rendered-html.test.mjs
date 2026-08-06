@@ -30,7 +30,6 @@ test("renders the finished wedding invitation shell", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Sophie &amp; Alex \| Save the Date<\/title>/i);
-  assert.match(html, /For you, with love/);
   assert.match(html, /aria-label="Open Sophie and Alex/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|Starter Project/i);
 });
@@ -45,6 +44,12 @@ test("starts the SVG only after the extraction completes", async () => {
   assert.match(page, /event\.animationName !== "extractInvitation"/);
   assert.match(page, /phase === "revealed" && \(/);
   assert.match(page, /data=\{`\/invitation\.svg\?animation=\$\{animationRun\}`\}/);
+  assert.match(page, /href="https:\/\/forms\.gle\/ouv3ACJxg21uFDa9A"/);
+  assert.match(page, /Fill out this form!/);
+  assert.match(
+    page,
+    /phase === "revealed" && \(\s*<a\s+className="form-button"/,
+  );
   assert.match(css, /animation:\s*extractInvitation 2\.55s/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);

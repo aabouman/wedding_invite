@@ -33,7 +33,8 @@ object {
   font: inherit;
 }
 
-button:focus-visible {
+button:focus-visible,
+a:focus-visible {
   outline: 2px solid var(--red-deep);
   outline-offset: 6px;
 }
@@ -402,6 +403,37 @@ button:focus-visible {
   color: var(--red-deep);
 }
 
+.form-button {
+  position: absolute;
+  bottom: clamp(18px, 4svh, 38px);
+  left: 50%;
+  z-index: 14;
+  display: inline-flex;
+  min-height: 44px;
+  padding: 11px 22px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(105, 27, 27, 0.3);
+  border-radius: 999px;
+  background: linear-gradient(145deg, #b84c44, #92322f);
+  color: #fffaf1;
+  box-shadow: 0 10px 28px rgba(104, 43, 35, 0.24);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+  transform: translateX(-50%);
+  transition: filter 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  animation: showFormButton 500ms 650ms ease both;
+}
+
+.form-button:hover {
+  filter: brightness(1.07) saturate(1.05);
+  box-shadow: 0 12px 32px rgba(104, 43, 35, 0.31);
+  transform: translateX(-50%) translateY(-2px);
+}
+
 .screen-reader-status {
   position: absolute;
   width: 1px;
@@ -483,6 +515,17 @@ button:focus-visible {
   }
 }
 
+@keyframes showFormButton {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 @media (max-width: 600px) {
   .welcome-copy {
     top: clamp(28px, 6svh, 52px);
@@ -497,21 +540,14 @@ button:focus-visible {
   }
 
   .replay-button {
-    right: 50%;
+    right: 14px;
     bottom: 13px;
-    transform: translateX(50%);
-    animation-name: showReplayMobile;
   }
 
-  @keyframes showReplayMobile {
-    from {
-      opacity: 0;
-      transform: translate(50%, 8px);
-    }
-    to {
-      opacity: 1;
-      transform: translate(50%, 0);
-    }
+  .form-button {
+    bottom: 13px;
+    padding-inline: 18px;
+    font-size: 0.78rem;
   }
 }
 
